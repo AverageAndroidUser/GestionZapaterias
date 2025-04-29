@@ -29,7 +29,7 @@ public class Cliente_proveedor {
 
     @ManyToOne
     @JoinColumn(name = "ID_Municipios")
-    private Municipios municipios;
+    private Municipios municipio;
 
     public Cliente_proveedor(int iD_Cliente_proveedor, String nombre, int telefono, String celular, String direccion,
             String correo, Boolean tipo_cliente_proveedor, Usuarios usuarios, Municipios municipios) {
@@ -41,7 +41,7 @@ public class Cliente_proveedor {
         Correo = correo;
         Tipo_cliente_proveedor = tipo_cliente_proveedor;
         this.usuarios = usuarios;
-        this.municipios = municipios;
+        this.municipio = municipios;
     }
     public Cliente_proveedor() {
     }
@@ -94,11 +94,11 @@ public class Cliente_proveedor {
     public void setUsuarios(Usuarios usuarios) {
         this.usuarios = usuarios;
     }
-    public Municipios getMunicipios() {
-        return municipios;
+    public Municipios getMunicipio() {
+        return municipio;
     }
-    public void setMunicipios(Municipios municipios) {
-        this.municipios = municipios;
+    public void setMunicipio(Municipios municipios) {
+        this.municipio = municipios;
     }
 
     

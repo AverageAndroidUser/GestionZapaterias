@@ -24,107 +24,62 @@
     </style>
 </head>
 <body>
-    <!-- Barra de navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">MiSitio</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Servicios</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Acerca de</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contacto</a>
-                    </li>
-                    <!-- Opción de Logout -->
-                    <li class="nav-item">
-                        <form class="dropdown-item" th:action="@{/logout}" method="post">
-                            <input type="submit" value="Sign Out" class="nav-link active" />
-                        </form>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>    
-    <!-- Sección Hero -->
-    <section class="hero-section text-center">
-        <div class="container">
-            <h1 class="display-4 fw-bold mb-4">Bienvenido a nuestro sitio</h1>
-            <p class="lead mb-4">Descubre nuestros servicios de alta calidad diseñados para tus necesidades</p>
-            <a href="#" class="btn btn-primary btn-lg px-4 me-2">Comenzar</a>
-            <a href="#" class="btn btn-outline-light btn-lg px-4">Saber más</a>
-        </div>
-    </section>
+    <header th:replace = "~{barra}"></header> 
+    <div class="container mt-4">
+        <h2 class="mb-4">Lista de Materiales</h2>
 
-    <!-- Sección de características -->
-    <section class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2>Nuestros Servicios</h2>
-                <p class="lead text-muted">Lo que ofrecemos para ti</p>
-            </div>
-            
-            <div class="row g-4">
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="bi bi-speedometer2"></i>
-                            </div>
-                            <h3>Rápido</h3>
-                            <p class="text-muted">Servicios optimizados para máxima velocidad y eficiencia.</p>
-                            <a href="#" class="btn btn-outline-primary">Más info</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="bi bi-shield-check"></i>
-                            </div>
-                            <h3>Seguro</h3>
-                            <p class="text-muted">Protegemos tus datos con los más altos estándares de seguridad.</p>
-                            <a href="#" class="btn btn-outline-primary">Más info</a>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="col-md-4">
-                    <div class="card h-100 border-0 shadow-sm">
-                        <div class="card-body text-center p-4">
-                            <div class="feature-icon">
-                                <i class="bi bi-people"></i>
-                            </div>
-                            <h3>Confiable</h3>
-                            <p class="text-muted">Equipo profesional con años de experiencia en el sector.</p>
-                            <a href="#" class="btn btn-outline-primary">Más info</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="mb-3">
+            <a class="btn btn-success" th:href="@{/GestionZapaterias/Materiales/NuevoMaterial}">Agregar Nuevo Material</a>
         </div>
-    </section>
 
-    <!-- Llamado a la acción -->
-    <section class="py-5 bg-light">
-        <div class="container text-center">
-            <h2 class="mb-4">¿Listo para comenzar?</h2>
-            <p class="lead mb-4">Regístrate ahora y obtén un 20% de descuento en tu primer servicio</p>
-            <a href="#" class="btn btn-primary btn-lg px-4">Registrarse</a>
-        </div>
-    </section>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th><a th:href="@{|/GestionZapaterias/Materiales/0?orden=Nombre&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Nombre</a></th>
+                    <th>Descripción</th>
+                    <th><a th:href="@{|/GestionZapaterias/Materiales/0?orden=cantidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Cantidad</a></th>
+                    <th>Costo Unidad</th>
+                    <th>Stock Mínimo</th>
+                    <th>Fecha Actualización</th>
+                    <th>Proveedor</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="material : ${Materialess.content}">
+                    <td th:text="${material.Nombre}">Nombre</td>
+                    <td th:text="${material.Descripcion}">Descripción</td>
+                    <td th:text="${material.cantidad}">0</td>
+                    <td th:text="${material.costoUnidad}">0</td>
+                    <td th:text="${material.stockMinimo}">0</td>
+                    <td th:text="${material.fechaActualizacion}">Fecha</td>
+                    <td th:text="${material.clienteProveedores.Nombre}">Proveedor</td>
+                    <td th:text="${material.tipoMaterial.Descripcion}">Tipo</td>
+                    <td>
+                        <a th:href="@{/GestionZapaterias/Materiales/EditarMaterial/} + ${material.ID_Materiales}">EDITAR</a>
+                        <a th:href="@{/GestionZapaterias/Materiales/EliminarMaterial/} + ${material.ID_Materiales}">ELIMINAR</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
+        <!-- Paginación -->
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${Materialess.first} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/GestionZapaterias/Materiales/${Materialess.number - 1}?orden=${orden}&direccion=${direccion}|}">Anterior</a>
+                </li>
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, Materialess.totalPages - 1)}"
+                    th:classappend="${Materialess.number == i} ? 'active'">
+                    <a class="page-link" th:href="@{|/GestionZapaterias/Materiales/${i}?orden=${orden}&direccion=${direccion}|}" th:text="${i + 1}">1</a>
+                </li>
+                <li class="page-item" th:classappend="${Materialess.last} ? 'disabled'">
+                    <a class="page-link" th:href="@{|/GestionZapaterias/Materiales/${Materialess.number + 1}?orden=${orden}&direccion=${direccion}|}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
     <!-- Pie de página -->
     <footer class="bg-dark text-white py-4">
         <div class="container">

@@ -18,8 +18,7 @@ public class UsuarioLog {
         }else{
             CorreoUsuario = usuario.toString();
         }
-        Usuarios usuario2 = repositorio.findByCorreo(CorreoUsuario);
-        return usuario2;
+        Usuarios correo2 = repositorio.findByCorreo(CorreoUsuario);
+        return correo2;
     }
-
 }

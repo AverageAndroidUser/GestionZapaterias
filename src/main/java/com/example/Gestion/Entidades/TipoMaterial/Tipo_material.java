@@ -12,9 +12,9 @@ public class Tipo_material {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ID_Tipo_material;
     private String Descripcion;
-    private int Unidad_medida;
+    private String Unidad_medida;
 
-    public Tipo_material(int iD_Tipo_material, String Descripcion, int Unidad_medida) {
+    public Tipo_material(int iD_Tipo_material, String Descripcion, String Unidad_medida) {
         ID_Tipo_material = iD_Tipo_material;
         this.Descripcion = Descripcion;
         this.Unidad_medida = Unidad_medida;
@@ -38,10 +38,10 @@ public class Tipo_material {
     public void setDescripcion(String Descripcion) {
         this.Descripcion = Descripcion;
     }
-    public int getUnidad_medida() {
+    public String getUnidad_medida() {
         return Unidad_medida;
     }
-    public void setUnidad_medida(int Unidad_medida) {
+    public void setUnidad_medida(String Unidad_medida) {
         this.Unidad_medida = Unidad_medida;
     }
 }
