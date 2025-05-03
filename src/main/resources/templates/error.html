@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +7,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container" th:object="${error}">
         <h1 class="mt-5">Error</h1>
         <p class="lead">Lo sentimos, ha ocurrido un error.</p>
+        <p th:text="${error != null} ? ${error} : 'Ha ocurrido un error inesperado.'"></p>
         <button class="btn btn-primary"  type="button" onclick="regresar()">Volver al inicio</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>

@@ -29,7 +29,7 @@
             <!-- Celular -->
             <div class="mb-3">
                 <label for="Celular" class="form-label">Celular</label>
-                <input type="text" class="form-control" id="Celular" th:field="*{Celular}" required>
+                <input id="NumeroCelular" type="tel" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" class="form-control" th:field="*{Celular}" required>
             </div>
 
             <!-- Correo -->
@@ -65,6 +65,6 @@
             </div>
         </form>
     </div>
-    <script th:src="@{/js/app2.js}"></script>
+    <script th:src="@{/js/app.js}"></script>
 </body>
 </html>
