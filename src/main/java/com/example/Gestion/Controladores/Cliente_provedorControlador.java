@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ import com.example.Gestion.Entidades.TipoMaterial.Tipo_material;
 import com.example.Gestion.Entidades.TipoMaterial.Tipo_materialRepositorio;
 import com.example.Gestion.Entidades.Usuarios.UsuarioLog;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/GestionZapaterias/Proveedores")
 public class Cliente_provedorControlador {
@@ -34,18 +37,7 @@ public class Cliente_provedorControlador {
     @Autowired Tipo_materialRepositorio tipo_materialRepositorio;
     @Autowired Proveedor_tipo_materialRepositorio proveedor_tipo_materialRepositorio;
 
-    List<Proveedor_tipo_material> proveedor_tipo_material_Lista = new ArrayList<>();
-
-    /*@GetMapping("/") //Muestra todos los proveedores, pero un registro por cada tipo de material por proveedor, No agrupa
-    public String listaMateriales(Model model) {
-        List<Cliente_proveedor> Cliente_proveedor = cliente_proveedorRepositorio.findByUsuarios(usuarioLog.correoUsuario(),true );
-        List<Proveedor_tipo_material> proveedor_tipo_material = new ArrayList<>();
-        for(int i = 0; i < Cliente_proveedor.size(); i++){
-            proveedor_tipo_material.addAll(proveedor_tipo_materialRepositorio.findByProveedor(Cliente_proveedor.get(i)));
-        }
-        model.addAttribute("Proveedoress", proveedor_tipo_material);
-        return "Proveedores/ListaProveedores";
-    }*/
+    /*List<Proveedor_tipo_material> proveedor_tipo_material_Lista = new ArrayList<>();
 
     @GetMapping("/")
     public String listaMateriales(Model model) {
@@ -130,6 +122,118 @@ public class Cliente_provedorControlador {
             return "error";
         }
 
+    }*/
+
+    @GetMapping("/")
+    public String listaMateriales(Model model) {
+        List<Cliente_proveedor> proveedores = cliente_proveedorRepositorio.findByUsuarios(usuarioLog.correoUsuario(), true);
+        Map<Cliente_proveedor, List<Tipo_material>> proveedorTiposMap = new HashMap<>();
+
+        for (Cliente_proveedor proveedor : proveedores) {
+            List<Proveedor_tipo_material> relaciones = proveedor_tipo_materialRepositorio.findByProveedor(proveedor);
+            List<Tipo_material> tipos = relaciones.stream()
+                    .map(Proveedor_tipo_material::getTipo_material)
+                    .collect(Collectors.toList());
+            proveedorTiposMap.put(proveedor, tipos);
+        }
+
+        model.addAttribute("ProveedoresMap", proveedorTiposMap);
+        return "Proveedores/ListaProveedores";
+    }
+
+    // Mostrar formulario para nuevo proveedor
+    @GetMapping("/NuevoProveedor")
+    public String nuevoProveedor(Model model, HttpSession session) {
+        session.removeAttribute("listaTipoMaterial"); // limpia lista anterior
+        Cliente_proveedor cliente_proveedor = new Cliente_proveedor();
+
+        model.addAttribute("Tiposs", tipo_materialRepositorio.findAll());
+        model.addAttribute("Proveedoress", cliente_proveedor);
+        model.addAttribute("Departamentoss", departamentoRepositorio.findAll());
+        return "Proveedores/NuevoProveedor";
+    }
+
+    // Agregar tipo de material a la lista de sesión
+    @GetMapping("/Nuevo/TipoMaterialProveedor/{id_tipoM}")
+    @ResponseBody
+    public void nuevoTipoMatereialProveedor(@PathVariable("id_tipoM") int id_tipoM, HttpSession session) {
+        List<Proveedor_tipo_material> lista = (List<Proveedor_tipo_material>) session.getAttribute("listaTipoMaterial");
+        if (lista == null) {
+            lista = new ArrayList<>();
+        }
+
+        boolean existe = lista.stream().anyMatch(ptm -> ptm.getTipo_material().getID_Tipo_material() == id_tipoM);
+        if (!existe) {
+            Proveedor_tipo_material proTipM = new Proveedor_tipo_material();
+            proTipM.setTipo_material(tipo_materialRepositorio.findById(id_tipoM).get());
+            lista.add(proTipM);
+        }
+
+        session.setAttribute("listaTipoMaterial", lista);
+    }
+
+    // Eliminar tipo de material de la lista de sesión
+    @GetMapping("/Eliminar/TipoMaterialProveedor/{id_tipoM}")
+    @ResponseBody
+    public void eliminarTipoMaterialProveedor(@PathVariable("id_tipoM") int id_tipoM, HttpSession session) {
+        List<Proveedor_tipo_material> lista = (List<Proveedor_tipo_material>) session.getAttribute("listaTipoMaterial");
+        if (lista != null) {
+            lista.removeIf(ptm -> ptm.getTipo_material().getID_Tipo_material() == id_tipoM);
+            session.setAttribute("listaTipoMaterial", lista);
+        }
+    }
+
+    // Guardar proveedor junto a su lista de tipos de material
+    @PostMapping("/GuardarProveedor")
+    public String guardarProveedor(Cliente_proveedor cliente_proveedor, HttpSession session) {
+        cliente_proveedor.setUsuarios(usuarioLog.correoUsuario());
+        cliente_proveedor.setTipo_cliente_proveedor(true);
+        Cliente_proveedor proveedorGuardado = cliente_proveedorRepositorio.save(cliente_proveedor);
+
+        List<Proveedor_tipo_material> lista = (List<Proveedor_tipo_material>) session.getAttribute("listaTipoMaterial");
+        if (lista != null) {
+            for (Proveedor_tipo_material ptm : lista) {
+                ptm.setCliente_proveedor(proveedorGuardado);
+                proveedor_tipo_materialRepositorio.save(ptm);
+            }
+            session.removeAttribute("listaTipoMaterial");
+        }
+
+        return "redirect:/GestionZapaterias/Proveedores/";
+    }
+
+    // Editar proveedor existente (con carga de datos básica)
+    @GetMapping("/EditarProveedor/{id}")
+    public String editarProveedor(@PathVariable("id") int id, Model model, HttpSession session) {
+        Optional<Cliente_proveedor> optional = cliente_proveedorRepositorio.findById(id);
+        if (optional.isPresent() && optional.get().getUsuarios().equals(usuarioLog.correoUsuario())) {
+            Cliente_proveedor cliente_proveedor = optional.get();
+
+            // Precargar los tipos de material del proveedor en la sesión
+            List<Proveedor_tipo_material> tiposActuales = proveedor_tipo_materialRepositorio.findByProveedor(cliente_proveedor);
+            session.setAttribute("listaTipoMaterial", tiposActuales);
+
+            model.addAttribute("Tiposs", tipo_materialRepositorio.findAll());
+            model.addAttribute("Departamentoss", departamentoRepositorio.findAll());
+            model.addAttribute("Proveedoress", cliente_proveedor);
+            return "Proveedores/NuevoProveedor";
+        } else {
+            model.addAttribute("error", "Proveedor no encontrado o sin permisos.");
+            return "error";
+        }
+    }
+
+    // Eliminar proveedor
+    @GetMapping("/EliminarProveedor/{id}")
+    public String eliminarProveedor(@PathVariable("id") int id, Model model) {
+        Optional<Cliente_proveedor> optional = cliente_proveedorRepositorio.findById(id);
+        if (optional.isPresent() && optional.get().getUsuarios().equals(usuarioLog.correoUsuario())) {
+            cliente_proveedorRepositorio.deleteById(id);
+            return "redirect:/GestionZapaterias/Proveedores/";
+        } else {
+            model.addAttribute("error", "Proveedor no encontrado o sin permisos.");
+            return "error";
+        }
     }
 
 }
