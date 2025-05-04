@@ -1,6 +1,5 @@
 package com.example.Gestion.Controladores;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +32,6 @@ public class MaterialesControlador {
     @Autowired Tipo_materialRepositorio tipo_materialRepositorio;
     @Autowired UsuarioLog usuarioLog;
 
-    //List<Materiales> Listamateriales = new ArrayList<>();
-
     @GetMapping("/{pagina}")
     public String listaMateriales(@PathVariable("pagina") int pagina, @RequestParam(defaultValue = "10") int tamaño,   
         @RequestParam(defaultValue = "cantidad") String orden, @RequestParam(defaultValue = "asc") String direccion, Model model) {
@@ -56,11 +53,9 @@ public class MaterialesControlador {
     }
 
     @GetMapping("/NuevoMaterial")
-    @ResponseBody
     public String nuevoMaterial(Model model){
-        
         model.addAttribute("Proveedoress", cliente_proveedorRepositorio.findByUsuarios(usuarioLog.correoUsuario(),true));
-        model.addAttribute("TiposMaterialess", tipo_materialRepositorio.findAll());
+        //model.addAttribute("TiposMaterialess", tipo_materialRepositorio.findAll());
         model.addAttribute("Materialess", new Materiales());
         return "Materiales/NuevoMaterial";
     }

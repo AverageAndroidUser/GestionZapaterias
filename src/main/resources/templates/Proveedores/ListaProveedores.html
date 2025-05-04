@@ -18,34 +18,40 @@
                     <th>Celular</th>
                     <th>Correo</th>
                     <th>Dirección</th>
+                    <th>Departamento</th>
                     <th>Municipio</th>
+                    <th>Tipo Material</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="proveedor: ${Proveedoress}">
+                <tr th:each="entry : ${ProveedoresMap}">
+                    <td th:text="${entry.key.Nombre}"></td>
+                    <td th:text="${entry.key.Telefono}"></td>
+                    <td th:text="${entry.key.Celular}"></td>
+                    <td th:text="${entry.key.Correo}"></td>
+                    <td th:text="${entry.key.Direccion}"></td>
+                    <td th:text="${entry.key.municipio.Departamento.Nombre}"></td>
+                    <td th:text="${entry.key.municipio.Nombre}"></td>
                     
-                    <td th:text="${proveedor.Nombre}"></td>
-                    <td th:text="${proveedor.Telefono}"></td>
-                    <td th:text="${proveedor.Celular}"></td>
-                    <td th:text="${proveedor.Correo}"></td>
-                    <td th:text="${proveedor.Direccion}"></td>
-                    <td th:text="${proveedor.municipio.Nombre}">N/A</td>
+                    <!-- Tipo Material como lista -->
                     <td>
-                        <a th:href="@{/GestionZapaterias/Proveedor/EditarProveedor/} + ${proveedor.ID_Cliente_proveedor}">EDITAR</a>
-                        <a th:href="@{/GestionZapaterias/Proveedor/EliminarProveedor/} + ${proveedor.ID_Cliente_proveedor}">ELIMINAR</a>
+                        <ul>
+                            <li th:each="tipo : ${entry.value}" th:text="${tipo.Descripcion}"></li>
+                        </ul>
+                    </td>
+                
+                    <td>
+                        <a th:href="@{/GestionZapaterias/Proveedores/EditarProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}">EDITAR</a>
+                        <a th:href="@{/GestionZapaterias/Proveedores/EliminarProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}">ELIMINAR</a>
                     </td>
                 </tr>
-            </tbody>
+            </tbody>                
         </table>
-
     </div> 
     <div class="container mt-3">
-        <a class="btn btn-primary" th:href="@{/GestionZapaterias/Proveedor/NuevoProveedor}">Agregar Proveedor</a>
+        <a class="btn btn-primary" th:href="@{/GestionZapaterias/Proveedores/NuevoProveedor}">Agregar Proveedor</a>
     </div>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-    <script>
-        console.log("Este JS embebido funciona");
-    </script>
 </body>
 </html>

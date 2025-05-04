@@ -40,6 +40,22 @@ $(document).ready(function() {
   });
 });
 
+$(document).ready(function() {
+  $('#proveedorLista').change(function() {
+    var proveedorId = $(this).val();
+    $.ajax({
+      url: '/TipoMateriales/' + proveedorId,
+      type: 'GET',
+      success: function(data){
+        $('#tipoMaterialLista').empty();
+        $.each(data, function(index, TipoMaterial){
+          $('#tipoMaterialLista').append('<option value="' + TipoMaterial.tipo_material.id_Tipo_material + '">' + TipoMaterial.tipo_material.descripcion + '</option>');
+        });
+      }
+    });
+  });
+});
+
 function buscarProductos() {
   var keyword = document.getElementById("barraBusqueda").value;
   fetch(`/GestionZapaterias/Materiales/Buscar?nombre=` + keyword)
@@ -67,4 +83,36 @@ function buscarProductos() {
               `;
           });
       });
+}
+
+function agregarProTipM(idTipo, button) {
+  console.log("------> ");
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", '/GestionZapaterias/Proveedores/Nuevo/TipoMaterialProveedor/' + encodeURIComponent(idTipo), true);
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4 && xhr.status == 200) {
+          button.disabled = true;
+          button.textContent = "AGREGADO"
+
+          var botonEliminar = document.getElementById('botonEliminar_' + idTipo);
+          botonEliminar.disabled = false;
+      }
+  };
+  xhr.send();
+}
+
+function eliminarProTipM(idTipo, button) {
+  var xhr = new XMLHttpRequest();
+  xhr.open("GET", '/GestionZapaterias/Proveedores/Eliminar/TipoMaterialProveedor/' + encodeURIComponent(idTipo), true);
+  xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        var botonAgregar = document.getElementById('botonAgregar_' + idTipo);
+        botonAgregar.disabled = false;
+        botonAgregar.textContent = "AGREGAR";
+
+        var botonEliminar = document.getElementById('botonEliminar_' + idTipo);
+        botonEliminar.disabled = true;
+      }
+  };
+  xhr.send();
 }

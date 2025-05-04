@@ -45,6 +45,7 @@
                     <th><a th:href="@{|/GestionZapaterias/Materiales/0?orden=fechaActualizacion&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Fecha Actualización</a></th>
                     <th>Proveedor</th>
                     <th>Tipo</th>
+                    <th>Unidad</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -58,6 +59,7 @@
                     <td th:text="${material.fechaActualizacion}">Fecha</td>
                     <td th:text="${material.clienteProveedores.Nombre}">Proveedor</td>
                     <td th:text="${material.tipoMaterial.Descripcion}">Tipo</td>
+                    <td th:text="${material.tipoMaterial.Unidad_medida}">Tipo</td>
                     <td>
                         <a th:href="@{/GestionZapaterias/Materiales/EditarMaterial/} + ${material.ID_Materiales}">EDITAR</a>
                         <a th:href="@{/GestionZapaterias/Materiales/EliminarMaterial/} + ${material.ID_Materiales}">ELIMINAR</a>
