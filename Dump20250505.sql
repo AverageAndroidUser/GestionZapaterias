@@ -38,7 +38,7 @@ CREATE TABLE `cliente_proveedor` (
   KEY `Municipios_Proveedores_idx` (`ID_Municipios`),
   CONSTRAINT `Municipios_Proveedores` FOREIGN KEY (`ID_Municipios`) REFERENCES `municipios` (`ID_Municipios`),
   CONSTRAINT `Usuarios_Proveedores` FOREIGN KEY (`ID_Usuarios`) REFERENCES `usuarios` (`ID_Usuarios`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -47,7 +47,7 @@ CREATE TABLE `cliente_proveedor` (
 
 LOCK TABLES `cliente_proveedor` WRITE;
 /*!40000 ALTER TABLE `cliente_proveedor` DISABLE KEYS */;
-INSERT INTO `cliente_proveedor` VALUES (5,'pruebaProveedor123',5877788,'321477884','Por ahí en algún lado pro 1pro',5,686,'2025-04-29 15:12:32',1,'prueba@correoProve.com'),(6,'1',123123123,'123123123','Por ahí en algún lado pro 111',6,835,'2025-04-29 15:32:29',1,'prueba311@correo.com');
+INSERT INTO `cliente_proveedor` VALUES (5,'pruebaProveedor123',5877788,'321477884','Por ahí en algún lado pro 1pro',5,686,'2025-04-29 15:12:32',1,'prueba@correoProve.com'),(6,'1',123123123,'123123123','Por ahí en algún lado pro 111',6,835,'2025-04-29 15:32:29',1,'prueba311@correo.com'),(7,'Proveedor prueba22',5741747,'315-788-9000','Proveedor por ahi',8,605,'2025-05-03 15:19:14',1,'proveedor2@prueba.com'),(8,'Proveedor2 usuario3',5784111,'378-411-4777','Por ahí en algún lado prov2',5,738,'2025-05-04 08:15:34',1,'prueba5@proveedor.com'),(12,'Proveedor 10 prueba3 ',5874400,'322-547-7777','Por ahí en algún lado prov10',5,631,'2025-05-04 10:22:37',1,'proveedor10@prueba3.com'),(13,'Proveedor 11 usuario 3',5697771,'314-787-7114','Por ahí en algún lado prov11',5,394,'2025-05-04 10:51:30',1,'proveedor11@prueba.com');
 /*!40000 ALTER TABLE `cliente_proveedor` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,10 +180,10 @@ CREATE TABLE `materiales` (
   KEY `Usuarios_Materiales_idx` (`ID_Usuarios`),
   KEY `Proveedores_Materiales_idx` (`ID_Cliente_Proveedor`),
   KEY `Tipo_Material_Materiales_idx` (`ID_Tipo_Material`),
-  CONSTRAINT `Proveedores_Materiales` FOREIGN KEY (`ID_Cliente_Proveedor`) REFERENCES `cliente_proveedor` (`ID_Cliente_proveedor`),
+  CONSTRAINT `Proveedores_Materiales` FOREIGN KEY (`ID_Cliente_Proveedor`) REFERENCES `cliente_proveedor` (`ID_Cliente_proveedor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Tipo_Material_Materiales` FOREIGN KEY (`ID_Tipo_Material`) REFERENCES `tipo_material` (`ID_Tipo_Material`),
   CONSTRAINT `Usuarios_Materiales` FOREIGN KEY (`ID_Usuarios`) REFERENCES `usuarios` (`ID_Usuarios`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +192,7 @@ CREATE TABLE `materiales` (
 
 LOCK TABLES `materiales` WRITE;
 /*!40000 ALTER TABLE `materiales` DISABLE KEYS */;
-INSERT INTO `materiales` VALUES (2,'aaaaa','aaaaa',123,11111,1,'2025-04-26','2025-04-29 15:32:49',6,6,9);
+INSERT INTO `materiales` VALUES (4,'Material 2 proveedor3','----',15,25000,5,'2025-05-01','2025-05-03 15:42:21',5,5,5),(6,'Material 4 proveedor3','------',8,5000,2,'2025-05-06','2025-05-03 15:43:30',5,5,2),(7,'Material 5 proveedor3','-----------',85,200,50,'2025-05-01','2025-05-03 15:44:05',5,5,6),(8,'Material 1 proveedor1 ','-/',17,58000,2,'2025-05-01','2025-05-03 16:27:40',6,6,8),(9,'Materia 6 proveedor 3','--0',250,37000,75,'2025-05-02','2025-05-03 20:24:07',5,5,4),(10,'Suela #2','Suela para zapato',27,15000,3,'2025-05-02','2025-05-04 10:53:05',5,13,1);
 /*!40000 ALTER TABLE `materiales` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -307,9 +307,9 @@ CREATE TABLE `proveedor_tipo_material` (
   PRIMARY KEY (`ID_Proveedor_Tipo_Material`),
   KEY `TipoMaterial_ProveedorTipoMaterial_idx` (`ID_Tipo_Material`),
   KEY `Proveedores_ProveedoresTipoMaterial_idx` (`ID_Cliente_Proveedor`),
-  CONSTRAINT `Proveedores_ProveedoresTipoMaterial` FOREIGN KEY (`ID_Cliente_Proveedor`) REFERENCES `cliente_proveedor` (`ID_Cliente_proveedor`),
+  CONSTRAINT `Proveedores_ProveedoresTipoMaterial` FOREIGN KEY (`ID_Cliente_Proveedor`) REFERENCES `cliente_proveedor` (`ID_Cliente_proveedor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `TipoMaterial_ProveedorTipoMaterial` FOREIGN KEY (`ID_Tipo_Material`) REFERENCES `tipo_material` (`ID_Tipo_Material`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -318,6 +318,7 @@ CREATE TABLE `proveedor_tipo_material` (
 
 LOCK TABLES `proveedor_tipo_material` WRITE;
 /*!40000 ALTER TABLE `proveedor_tipo_material` DISABLE KEYS */;
+INSERT INTO `proveedor_tipo_material` VALUES (11,1,12),(12,10,12),(13,7,12),(14,2,12),(15,5,12),(16,5,13),(17,6,13),(18,7,13),(19,1,13);
 /*!40000 ALTER TABLE `proveedor_tipo_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +357,7 @@ CREATE TABLE `tipo_material` (
   `Descripcion` varchar(45) NOT NULL,
   `Unidad_medida` varchar(45) NOT NULL,
   PRIMARY KEY (`ID_Tipo_Material`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,7 +366,7 @@ CREATE TABLE `tipo_material` (
 
 LOCK TABLES `tipo_material` WRITE;
 /*!40000 ALTER TABLE `tipo_material` DISABLE KEYS */;
-INSERT INTO `tipo_material` VALUES (1,'Suela','Unidad'),(2,'Tela','Metro'),(3,'Pegamento','Unidad'),(4,'Hilo','Metro'),(5,'Plantilla','Unidad'),(6,'Aguja','Unidad'),(7,'Cuero','Metro'),(8,'Remache','Unidad'),(9,'Hebilla','Unidad'),(10,'Forro interno','Metro');
+INSERT INTO `tipo_material` VALUES (1,'Suela','Unidad'),(2,'Tela','Metro'),(3,'Pegamento','Unidad'),(4,'Hilo','Metro'),(5,'Plantilla','Unidad'),(6,'Aguja','Unidad'),(7,'Cuero','Metro'),(8,'Remache','Unidad'),(9,'Hebilla','Unidad'),(10,'Forro interno','Metro'),(11,'Otro','Unidad');
 /*!40000 ALTER TABLE `tipo_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,7 +420,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `Telefono_UNIQUE` (`Telefono`),
   KEY `Municipios_Usuarios_idx` (`ID_Municipio`),
   CONSTRAINT `Municipios_Usuarios` FOREIGN KEY (`ID_Municipio`) REFERENCES `municipios` (`ID_Municipios`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,7 +429,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (5,'PruebaZapateria3','PruebaEncargado3',5784114,'374-488-1247','prueba3@correo.com','Por ahí en algún lado 3','2025-04-26 16:27:14','$2a$10$.TR90D8InruRuJIFWr7UmOt01cEYCrqK/e1oIN4dEADkNGXR4P6Gy',708),(6,'PruebaZapateria1','PruebaEncargado1',57414755,'318-478-3634','prueba1@correo.com','Por ahí en algún lado','2025-04-26 16:42:52','$2a$10$XXjxSXHaJpZRSAo0WCxAzu3eXVGipTZhzjIztBVYTkW5TFRqbynJC',664);
+INSERT INTO `usuarios` VALUES (5,'PruebaZapateria3','PruebaEncargado3',5784114,'374-488-1247','prueba3@correo.com','Por ahí en algún lado 3','2025-04-26 16:27:14','$2a$10$.TR90D8InruRuJIFWr7UmOt01cEYCrqK/e1oIN4dEADkNGXR4P6Gy',708),(6,'PruebaZapateria1','PruebaEncargado1',57414755,'318-478-3634','prueba1@correo.com','Por ahí en algún lado','2025-04-26 16:42:52','$2a$10$XXjxSXHaJpZRSAo0WCxAzu3eXVGipTZhzjIztBVYTkW5TFRqbynJC',664),(8,'PruebaZapateria2','Encargado2',5789771,'314-471-7111','prueba2@correo.com','Por ahí en algún lado 2','2025-05-03 15:18:13','$2a$10$EDWPGKMNYLv6.DA28e69HelJpYi46v8VBkVMsfEGvMbuuT0oZUYk.',664);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -441,4 +442,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-29 15:35:13
+-- Dump completed on 2025-05-05 15:26:12
