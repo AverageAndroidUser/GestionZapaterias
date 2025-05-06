@@ -124,6 +124,7 @@ public class Cliente_provedorControlador {
 
     }*/
 
+    //Maneja la lista de materiales por proveedor por Sesion de usuario para evitar conflictos cuando multiples usuarios usen el controlador
     @GetMapping("/")
     public String listaMateriales(Model model) {
         List<Cliente_proveedor> proveedores = cliente_proveedorRepositorio.findByUsuarios(usuarioLog.correoUsuario(), true);
