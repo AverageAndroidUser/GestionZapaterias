@@ -16,10 +16,10 @@ public class Productos {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID_Productos;
+    private int idProductos;
     private String Nombre;
     private String Descripcion;
-    private int Precio_unitario;
+    private int precioUnitario;
     private String Referencia;
 
     @ManyToOne
@@ -39,22 +39,22 @@ public class Productos {
 
     public Productos(int ID_Productos, String Nombre, String Descripcion, int Precio_unitario, String Referencia,
             Usuarios usuario, Tipo_producto tipo_producto, Materiales materiales) {
-        this.ID_Productos = ID_Productos;
+        this.idProductos = ID_Productos;
         this.Nombre = Nombre;
         this.Descripcion = Descripcion;
-        this.Precio_unitario = Precio_unitario;
+        this.precioUnitario = Precio_unitario;
         this.Referencia = Referencia;
         this.usuario = usuario;
         this.tipo_producto = tipo_producto;
         this.materiales = materiales;
     }
 
-    public int getID_Productos() {
-        return ID_Productos;
+    public int getIdProductos() {
+        return idProductos;
     }
 
-    public void setID_Productos(int iD_Productos) {
-        ID_Productos = iD_Productos;
+    public void setIdProductos(int iD_Productos) {
+        idProductos = iD_Productos;
     }
 
     public String getNombre() {
@@ -73,12 +73,12 @@ public class Productos {
         Descripcion = descripcion;
     }
 
-    public int getPrecio_unitario() {
-        return Precio_unitario;
+    public int getPrecioUnitario() {
+        return precioUnitario;
     }
 
-    public void setPrecio_unitario(int precio_unitario) {
-        Precio_unitario = precio_unitario;
+    public void setPrecioUnitario(int precio_unitario) {
+        precioUnitario = precio_unitario;
     }
 
     public String getReferencia() {

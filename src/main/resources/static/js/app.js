@@ -56,7 +56,7 @@ $(document).ready(function() {
   });
 });
 
-function buscarProductos() {
+function buscarMateriales() {
   var keyword = document.getElementById("barraBusqueda").value;
   fetch(`/GestionZapaterias/Materiales/Buscar?nombre=` + keyword)
       .then(response => response.json())
@@ -115,4 +115,32 @@ function eliminarProTipM(idTipo, button) {
       }
   };
   xhr.send();
+}
+
+function buscarProductos() {
+  var keyword = document.getElementById("barraBusqueda").value;
+  fetch(`/GestionZapaterias/Productos/Buscar?nombre=` + keyword)
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);  
+          var table = document.getElementById("tablaProductos");
+          table.innerHTML = ''; 
+          data.forEach(producto => {
+              table.innerHTML += `
+                  <tr>
+                      <td>${producto.nombre}</td>
+                      <td>${producto.descripcion}</td>
+                      <td>${producto.precioUnitario}</td>
+                      <td>${producto.costo_unidad}</td>
+                      <td>${producto.referencia}</td>
+                      <td>${producto.tipo_producto.descripcion}</td>
+                      <td>${producto.materiales.nombre}</td> 
+                      <td>
+                          <a href="/GestionZapaterias/Productos/EditarProducto/${producto.idProductos}">EDITAR</a>
+                          <a href="/GestionZapaterias/Productos/EliminarProducto/${producto.idProductos}">ELIMINAR</a>
+                      </td>
+                  </tr>
+              `;
+          });
+      });
 }

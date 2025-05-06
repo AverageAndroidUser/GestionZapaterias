@@ -28,7 +28,7 @@
     <div class="container mt-4">
         <h2 class="mb-4">Lista de Materiales</h2>
         <div class="col-md-6">
-            <input type="text" id="barraBusqueda" class="form-control mb-3" placeholder="Buscar material..." oninput="buscarProductos()">
+            <input type="text" id="barraBusqueda" class="form-control mb-3" placeholder="Buscar material..." oninput="buscarMateriales()">
         </div>
         <div class="mb-3">
             <a class="btn btn-success" th:href="@{/GestionZapaterias/Materiales/NuevoMaterial}">Agregar Nuevo Material</a>
@@ -84,37 +84,7 @@
             </ul>
         </nav>
     </div>
-    <!-- Pie de página -->
-    <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <h5>MiSitio</h5>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Enlaces</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Inicio</a></li>
-                        <li><a href="#" class="text-white">Servicios</a></li>
-                        <li><a href="#" class="text-white">Acerca de</a></li>
-                        <li><a href="#" class="text-white">Contacto</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4 mb-3">
-                    <h5>Contacto</h5>
-                    <ul class="list-unstyled">
-                        <li><i class="bi bi-envelope me-2"></i> info@misitio.com</li>
-                        <li><i class="bi bi-telephone me-2"></i> +1 234 567 890</li>
-                    </ul>
-                </div>
-            </div>
-            <hr class="my-4">
-            <div class="text-center">
-                <p class="mb-0">&copy; 2023 MiSitio. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
+    <footer th:replace="~{piePagina}"></footer>
     <script th:src="@{/js/app.js}"></script>
 </body>
 </html>

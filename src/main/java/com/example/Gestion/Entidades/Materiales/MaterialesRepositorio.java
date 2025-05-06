@@ -18,4 +18,7 @@ public interface MaterialesRepositorio extends JpaRepository<Materiales, Integer
     @Query("SELECT m FROM Materiales m WHERE m.Nombre LIKE %?1% AND m.usuarios = ?2")
     List<Materiales> findByNombreAndUsuarios(String nombre, Usuarios usuario);
 
+    @Query("SELECT m FROM Materiales m WHERE m.usuarios = ?1 AND m.tipoMaterial.ID_Tipo_material IN (2, 7, 11)")
+    List<Materiales> findByUsuarioTipoM(Usuarios usuario);
+
 }

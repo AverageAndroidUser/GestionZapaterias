@@ -40,7 +40,6 @@ public class MaterialesControlador {
         Pageable pageable = PageRequest.of(pagina, tamaño, sort);
         Page<Materiales> materiales = materialesRepositorio.findByUsuarios(usuarioLog.correoUsuario(), pageable);
         model.addAttribute("Materialess", materiales);
-        model.addAttribute("Proveedores", cliente_proveedorRepositorio.findByUsuarios(usuarioLog.correoUsuario(), true));
         model.addAttribute("orden", orden);
         model.addAttribute("direccion", direccion);
         return "Materiales/ListaMateriales";
