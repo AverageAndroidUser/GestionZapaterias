@@ -41,7 +41,7 @@
                         <input type="text" placeholder="Dirección de la Zapateria" th:field = "${Usuarioss.Direccion}" required minlength="10" maxlength="100">
                     </div>
                     <div class="combo">
-                        <div class="group-input" style="margin-right: 10px;">
+                        <div class="group-input" style="margin-right: 10px; padding-top: 10px;">
                             <select id = "departamentoLista" th:field = "${Usuarioss.municipio.departamento}" required>
                                 <option value="" hidden>Departamento</option>
                                 <option th:each = "departamento:${Departamentoss}" th:value = "${departamento.ID_Departamento}" th:text = "${departamento.Nombre}"></option>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="group-input">
                             <i class="fa fa-lock"></i>
-                            <select id="municipioLista" th:field = "${Usuarioss.municipio}" required>
+                            <select id="municipioLista" th:field = "${Usuarioss.municipio}" required style="margin-top: 10px;">
                                 <option value="" hidden>Ciudad</option>
                             </select>
                         </div>

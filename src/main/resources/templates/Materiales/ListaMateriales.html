@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Sitio Web - Inicio</title>
+    <link rel="stylesheet" href="/css/custom-bootstrap.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Iconos de Bootstrap -->
@@ -16,6 +18,7 @@
             color: white;
             padding: 100px 0;
         }
+
         .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1rem;
@@ -23,63 +26,107 @@
         }
     </style>
 </head>
+
 <body>
-    <header th:replace = "~{barra}"></header> 
+    <header th:replace="~{barra}"></header>
     <div class="container mt-4">
         <h2 class="mb-4">Lista de Materiales</h2>
-        <div class="col-md-6">
-            <input type="text" id="barraBusqueda" class="form-control mb-3" placeholder="Buscar material..." oninput="buscarMateriales()">
-        </div>
-        <div class="mb-3">
-            <a class="btn btn-success" th:href="@{/GestionZapaterias/Materiales/NuevoMaterial}">Agregar Nuevo Material</a>
+        <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
+            <div class="col-md-6">
+                <input type="text" id="barraBusqueda" class="form-control mb-3" placeholder="Buscar material..."
+                    oninput="buscarMateriales()">
+            </div>
+            <div class="mb-3">
+                <a class="btn btn-success" th:href="@{/GestionZapaterias/Materiales/NuevoMaterial}">Agregar Nuevo
+                    Material</a>
+            </div>
         </div>
 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th><a>Nombre</a></th>
-                    <th>Descripción</th>
-                    <th><a th:href="@{|/GestionZapaterias/Materiales/0?orden=cantidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Cantidad</a></th>
-                    <th><a th:href="@{|/GestionZapaterias/Materiales/0?orden=costoUnidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Costo Unidad</a></th>
-                    <th><a th:href="@{|/GestionZapaterias/Materiales/0?orden=stockMinimo&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Stock Mínimo</a></th>
-                    <th><a th:href="@{|/GestionZapaterias/Materiales/0?orden=fechaActualizacion&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Fecha Actualización</a></th>
-                    <th>Proveedor</th>
-                    <th>Tipo</th>
-                    <th>Unidad</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="tablaMateriales">
-                <tr th:each="material : ${Materialess.content}">
-                    <td th:text="${material.Nombre}">Nombre</td>
-                    <td th:text="${material.Descripcion}">Descripción</td>
-                    <td th:text="${material.cantidad}">0</td>
-                    <td th:text="${material.costoUnidad}">0</td>
-                    <td th:text="${material.stockMinimo}">0</td>
-                    <td th:text="${material.fechaActualizacion}">Fecha</td>
-                    <td th:text="${material.clienteProveedores.Nombre}">Proveedor</td>
-                    <td th:text="${material.tipoMaterial.Descripcion}">Tipo</td>
-                    <td th:text="${material.tipoMaterial.Unidad_medida}">Tipo</td>
-                    <td>
-                        <a th:href="@{/GestionZapaterias/Materiales/EditarMaterial/} + ${material.ID_Materiales}">EDITAR</a>
-                        <a th:href="@{/GestionZapaterias/Materiales/EliminarMaterial/} + ${material.ID_Materiales}">ELIMINAR</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><a>Nombre</a></th>
+                        <th>Descripción</th>
+                        <th><a
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=cantidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Cantidad</a>
+                        </th>
+                        <th><a
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=costoUnidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Costo
+                                Unidad</a></th>
+                        <th><a
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=stockMinimo&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Stock
+                                Mínimo</a></th>
+                        <th><a
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=fechaActualizacion&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Fecha
+                                Actualización</a></th>
+                        <th>Proveedor</th>
+                        <th>Tipo</th>
+                        <th>Unidad</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaMateriales">
+                    <tr th:each="material : ${Materialess.content}">
+                        <td th:text="${material.Nombre}">Nombre</td>
+                        <td th:text="${material.Descripcion}">Descripción</td>
+                        <td th:text="${material.cantidad}">0</td>
+                        <td th:text="${material.costoUnidad}">0</td>
+                        <td th:text="${material.stockMinimo}">0</td>
+                        <td th:text="${material.fechaActualizacion}">Fecha</td>
+                        <td th:text="${material.clienteProveedores.Nombre}">Proveedor</td>
+                        <td th:text="${material.tipoMaterial.Descripcion}">Tipo</td>
+                        <td th:text="${material.tipoMaterial.Unidad_medida}">Tipo</td>
+                        <td>
+                            <a th:href="@{/GestionZapaterias/Materiales/EditarMaterial/} + ${material.ID_Materiales}" class="link-warning link-underline-opacity-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-edit">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
+                                    <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
+                                    <path d="M16 5l3 3" />
+                                </svg>
+                            </a>
+                            <a th:href="@{/GestionZapaterias/Materiales/EliminarMaterial/} + ${material.ID_Materiales}" class="link-danger link-underline-opacity-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-trash">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M4 7l16 0" />
+                                    <path d="M10 11l0 6" />
+                                    <path d="M14 11l0 6" />
+                                    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
+                                    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
+                                </svg>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <!-- Paginación -->
         <nav>
             <ul class="pagination">
                 <li class="page-item" th:classappend="${Materialess.first} ? 'disabled'">
-                    <a class="page-link" th:href="@{|/GestionZapaterias/Materiales/${Materialess.number - 1}?orden=${orden}&direccion=${direccion}|}">Anterior</a>
+                    <a class="page-link"
+                        th:href="@{|/GestionZapaterias/Materiales/${Materialess.number - 1}?orden=${orden}&direccion=${direccion}|}">Anterior</a>
                 </li>
-                <li class="page-item" th:each="i : ${#numbers.sequence(0, Materialess.totalPages - 1)}"
-                    th:classappend="${Materialess.number == i} ? 'active'">
-                    <a class="page-link" th:href="@{|/GestionZapaterias/Materiales/${i}?orden=${orden}&direccion=${direccion}|}" th:text="${i + 1}">1</a>
+
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(0, Materialess.totalPages > 0 ? Materialess.totalPages - 1 : 0)}"
+                    th:if="${Materialess.totalPages > 0}" th:classappend="${Materialess.number == i} ? 'active'">
+                    <a class="page-link"
+                        th:href="@{|/GestionZapaterias/Materiales/${i}?orden=${orden}&direccion=${direccion}|}"
+                        th:text="${i + 1}"></a>
                 </li>
+
                 <li class="page-item" th:classappend="${Materialess.last} ? 'disabled'">
-                    <a class="page-link" th:href="@{|/GestionZapaterias/Materiales/${Materialess.number + 1}?orden=${orden}&direccion=${direccion}|}">Siguiente</a>
+                    <a class="page-link"
+                        th:href="@{|/GestionZapaterias/Materiales/${Materialess.number + 1}?orden=${orden}&direccion=${direccion}|}">Siguiente</a>
                 </li>
             </ul>
         </nav>
@@ -87,4 +134,5 @@
     <footer th:replace="~{piePagina}"></footer>
     <script th:src="@{/js/app.js}"></script>
 </body>
+
 </html>
