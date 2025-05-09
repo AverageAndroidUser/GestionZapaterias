@@ -1,24 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: #7dbae3 !important; color: black !important;">
     <div class="container">
-        <a class="navbar-brand" href="#">MiSitio</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
+        <a class="navbar-brand d-flex align-items-center gap-2" style="color: black !important;" th:href="@{/GestionZapaterias/Materiales/0}">
+            <img src="/images/logo.png" width="35" height="35" alt="Logo Invenshoes">
+            Invenshoes
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="text-black icon icon-tabler icons-tabler-outline icon-tabler-menu-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 6l16 0" /><path d="M4 12l16 0" /><path d="M4 18l16 0" /></svg>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/GestionZapaterias/Productos/0}">Productos</a>
+            <ul class="navbar-nav w-100">
+                <li class="nav-item ms-lg-auto">
+                    <a class="nav-link text-black opacity-75" onmouseover="this.classList.toggle('opacity-75')" th:href="@{/GestionZapaterias/Materiales/0}">Materiales</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/GestionZapaterias/Materiales/0}">Materiales</a>
+                    <a class="nav-link text-black opacity-75" onmouseover="this.classList.toggle('opacity-75')" th:href="@{/GestionZapaterias/Productos/0}">Productos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/GestionZapaterias/Proveedores/}">Proveedores</a>
+                    <a class="nav-link text-black opacity-75" onmouseover="this.classList.toggle('opacity-75')" th:href="@{/GestionZapaterias/Proveedores/}">Proveedores</a>
                 </li>
                 <!-- Opción de Logout -->
-                <li class="nav-item">
+                <li class="nav-item ms-lg-auto">
                     <form class="dropdown-item" th:action="@{/logout}" method="post">
-                        <input type="submit" value="Sign Out" class="nav-link active" />
+                        <div class="d-flex align-items-center gap-2">
+                            <svg  xmlns="http://www.w3.org/2000/svg"  width="20"  height="20"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-logout-2"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 8v-2a2 2 0 0 1 2 -2h7a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-2" /><path d="M15 12h-12l3 -3" /><path d="M6 15l-3 -3" /></svg>
+                            <input type="submit" value="Salir" class="nav-link active" style="color: black !important;" />
+                        </div>
                     </form>
                 </li>
             </ul>

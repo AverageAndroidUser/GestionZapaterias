@@ -38,7 +38,7 @@ CREATE TABLE `cliente_proveedor` (
   KEY `Municipios_Proveedores_idx` (`ID_Municipios`),
   CONSTRAINT `Municipios_Proveedores` FOREIGN KEY (`ID_Municipios`) REFERENCES `municipios` (`ID_Municipios`),
   CONSTRAINT `Usuarios_Proveedores` FOREIGN KEY (`ID_Usuarios`) REFERENCES `usuarios` (`ID_Usuarios`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -62,7 +62,7 @@ CREATE TABLE `colores_productos` (
   `ID_Colores_Productos` int NOT NULL AUTO_INCREMENT,
   `Descripcion` varchar(60) NOT NULL,
   PRIMARY KEY (`ID_Colores_Productos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,7 +85,7 @@ CREATE TABLE `departamentos` (
   `ID_Departamento` int NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(255) NOT NULL,
   PRIMARY KEY (`ID_Departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,7 +122,7 @@ CREATE TABLE `detalles_pedidos` (
   CONSTRAINT `Pedidos_Detalles_Pedidos` FOREIGN KEY (`ID_Pedidos`) REFERENCES `pedidos` (`ID_Pedidos`),
   CONSTRAINT `Productos_Detalles_Pedido` FOREIGN KEY (`ID_Productos`) REFERENCES `productos` (`ID_Productos`),
   CONSTRAINT `Tallas_Productos_Detalles_Pedidos` FOREIGN KEY (`ID_Tallas_Producto`) REFERENCES `tallas_productos` (`ID_Tallas_productos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -145,7 +145,7 @@ CREATE TABLE `estado_pedido` (
   `ID_Estado_Pedido` int NOT NULL AUTO_INCREMENT,
   `Descripcion` varchar(45) NOT NULL,
   PRIMARY KEY (`ID_Estado_Pedido`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -183,7 +183,7 @@ CREATE TABLE `materiales` (
   CONSTRAINT `Proveedores_Materiales` FOREIGN KEY (`ID_Cliente_Proveedor`) REFERENCES `cliente_proveedor` (`ID_Cliente_proveedor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `Tipo_Material_Materiales` FOREIGN KEY (`ID_Tipo_Material`) REFERENCES `tipo_material` (`ID_Tipo_Material`),
   CONSTRAINT `Usuarios_Materiales` FOREIGN KEY (`ID_Usuarios`) REFERENCES `usuarios` (`ID_Usuarios`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -210,7 +210,7 @@ CREATE TABLE `municipios` (
   PRIMARY KEY (`ID_Municipios`),
   KEY `Departamentos_Municipios_idx` (`ID_Departamento`),
   CONSTRAINT `Departamentos_Municipios` FOREIGN KEY (`ID_Departamento`) REFERENCES `departamentos` (`ID_Departamento`)
-) ENGINE=InnoDB AUTO_INCREMENT=1127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1127 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `pedidos` (
   CONSTRAINT `Cliente_Proveedor_Pedidos` FOREIGN KEY (`ID_Cliente_Proveedor`) REFERENCES `cliente_proveedor` (`ID_Cliente_proveedor`),
   CONSTRAINT `Estado_Pedido_Pedidos` FOREIGN KEY (`ID_Estado_Pedido`) REFERENCES `estado_pedido` (`ID_Estado_Pedido`),
   CONSTRAINT `Usuarios_Pedidos` FOREIGN KEY (`ID_Usuarios`) REFERENCES `usuarios` (`ID_Usuarios`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +281,7 @@ CREATE TABLE `productos` (
   CONSTRAINT `Materiales_Productos` FOREIGN KEY (`ID_Material`) REFERENCES `materiales` (`ID_Materiales`),
   CONSTRAINT `TIpo_Producto_Producto` FOREIGN KEY (`ID_Tipo_Producto`) REFERENCES `tipo_producto` (`ID_Tipo_Producto`),
   CONSTRAINT `Usuarios_Productos` FOREIGN KEY (`ID_Usuarios`) REFERENCES `usuarios` (`ID_Usuarios`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -310,7 +310,7 @@ CREATE TABLE `proveedor_tipo_material` (
   KEY `Proveedores_ProveedoresTipoMaterial_idx` (`ID_Cliente_Proveedor`),
   CONSTRAINT `Proveedores_ProveedoresTipoMaterial` FOREIGN KEY (`ID_Cliente_Proveedor`) REFERENCES `cliente_proveedor` (`ID_Cliente_proveedor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `TipoMaterial_ProveedorTipoMaterial` FOREIGN KEY (`ID_Tipo_Material`) REFERENCES `tipo_material` (`ID_Tipo_Material`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -334,7 +334,7 @@ CREATE TABLE `tallas_productos` (
   `ID_Tallas_productos` int NOT NULL AUTO_INCREMENT,
   `Numero` int NOT NULL,
   PRIMARY KEY (`ID_Tallas_productos`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -358,7 +358,7 @@ CREATE TABLE `tipo_material` (
   `Descripcion` varchar(45) NOT NULL,
   `Unidad_medida` varchar(45) NOT NULL,
   PRIMARY KEY (`ID_Tipo_Material`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -382,7 +382,7 @@ CREATE TABLE `tipo_producto` (
   `ID_Tipo_Producto` int NOT NULL AUTO_INCREMENT,
   `Descripcion` varchar(80) NOT NULL,
   PRIMARY KEY (`ID_Tipo_Producto`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -422,7 +422,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `Telefono_UNIQUE` (`Telefono`),
   KEY `Municipios_Usuarios_idx` (`ID_Municipio`),
   CONSTRAINT `Municipios_Usuarios` FOREIGN KEY (`ID_Municipio`) REFERENCES `municipios` (`ID_Municipios`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

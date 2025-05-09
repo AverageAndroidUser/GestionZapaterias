@@ -34,22 +34,22 @@ public class WebSecurityConfig {
     SecurityFilterChain configure(HttpSecurity http) throws Exception{
         http.authenticationProvider(authenticationProvider());
 
-        http.authorizeHttpRequests(auth -> 
-            auth.requestMatchers("/GestionZapaterias/guardarUsuario", "/Municipios/", "/GestionZapaterias/Home").permitAll()
-            .requestMatchers("/GestionZapaterias/**").authenticated()
-            .anyRequest().permitAll()
-            )
-            .formLogin(login -> 
+        http.authorizeHttpRequests(auth ->
+                auth.requestMatchers("/GestionZapaterias/guardarUsuario", "/Municipios/", "/GestionZapaterias/Home").permitAll()
+                        .requestMatchers("/GestionZapaterias/**").authenticated()
+                        .anyRequest().permitAll()
+        )
+        .formLogin(login ->
                 login.loginPage("/GestionZapaterias/register")
-                .loginProcessingUrl("/login") // URL para el formulario de inicio de sesión, se encuentra en registrarForm <form method="post" th:action="@{/login}">
-                .failureUrl("/GestionZapaterias/error")
-                .usernameParameter("Correo")
-                .passwordParameter("Contraseña")
-                .defaultSuccessUrl("/GestionZapaterias/Materiales/0")
-                .permitAll()
-                )
-                .logout(logout -> logout.logoutSuccessUrl("/GestionZapaterias/register").permitAll()
-            ).exceptionHandling().accessDeniedPage("/error");
+                        .loginProcessingUrl("/login") // URL para el formulario de inicio de sesión, se encuentra en registrarForm <form method="post" th:action="@{/login}">
+                        .failureUrl("/GestionZapaterias/error")
+                        .usernameParameter("Correo")
+                        .passwordParameter("Contraseña")
+                        .defaultSuccessUrl("/GestionZapaterias/Materiales/0")
+                        .permitAll()
+        )
+        .logout(logout -> logout.logoutSuccessUrl("/GestionZapaterias/register").permitAll()
+        ).exceptionHandling(handling -> handling.accessDeniedPage("/error"));
             return http.build();
     }
   
