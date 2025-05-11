@@ -15,6 +15,9 @@ public interface ProductosRepositorio extends JpaRepository<Productos, Integer> 
 
     Page<Productos> findByUsuario(Usuarios usuario, Pageable page);
 
+    @Query("SELECT p FROM Productos p WHERE p.usuario = ?1")
+    List<Productos> findByUsuarioList(Usuarios usuario);
+
     @Query("SELECT p FROM Productos p WHERE p.Nombre LIKE %?1% AND p.usuario = ?2")
     List<Productos> findByNombreAndUsuarios(String nombre, Usuarios usuario);
     

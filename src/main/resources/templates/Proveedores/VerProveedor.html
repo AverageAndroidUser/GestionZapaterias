@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Proveedor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <header th:replace = "~{barra}"></header>
+    <div class="container mt-5" th:object="${Proveedoress}">
+        <h2 class="mb-4">Proveedor</h2>
+            <input type="hidden" th:field = "${Proveedoress.ID_Cliente_proveedor}">
+            <div class="mb-3">
+                <label for="Nombre" class="form-label">Nombre</label>
+                <p th:text="*{Nombre}"></p>
+            </div>
+            <div class="mb-3">
+                <label for="Telefono" class="form-label">Teléfono</label>
+                <p th:text="*{Telefono}"></p>
+            </div>
+            <div class="mb-3">
+                <label for="Celular" class="form-label">Celular</label>
+                <p pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" th:text="*{Celular}"></p>
+            </div>
+            <div class="mb-3">
+                <label for="Correo" class="form-label">Correo</label>
+                <p th:text="*{Correo}"></p>
+            </div>
+            <div class="mb-3">
+                <label for="Direccion" class="form-label">Dirección</label>
+                <p th:text="*{Direccion}"></p>
+            </div>
+            <div class="combo">
+                <label for="Direccion" class="form-label">Departamento</label>
+                <p th:text="${Proveedoress.municipio.departamento.Nombre}"></p>
+                <label for="Direccion" class="form-label">Municipio</label>
+                <p th:text="${Proveedoress.municipio.Nombre}"></p>
+            </div>
+            <p>Tipos Materiales:</p>
+             <div th:each="tipos : ${Tiposs}">
+                <strong><p th:text="${tipos.Tipo_material.Descripcion}"></p></strong>
+            </div>
+    </div>
+    <footer th:replace="~{piePagina}"></footer>
+</body>
+</html>

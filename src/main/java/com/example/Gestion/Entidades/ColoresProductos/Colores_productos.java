@@ -10,23 +10,23 @@ public class Colores_productos {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID_Color_Producto;
+    private int ID_Colores_Productos;
     private String Descripcion;
     
     public Colores_productos(int iD_Color_Producto, String descripcion) {
-        ID_Color_Producto = iD_Color_Producto;
+        ID_Colores_Productos = iD_Color_Producto;
         Descripcion = descripcion;
     }
 
     public Colores_productos() {
     }
 
-    public int getID_Color_Producto() {
-        return ID_Color_Producto;
+    public int getID_Colores_Productos() {
+        return ID_Colores_Productos;
     }
 
-    public void setID_Color_Producto(int iD_Color_Producto) {
-        ID_Color_Producto = iD_Color_Producto;
+    public void setID_Colores_Productos(int iD_Color_Producto) {
+        ID_Colores_Productos = iD_Color_Producto;
     }
 
     public String getDescripcion() {

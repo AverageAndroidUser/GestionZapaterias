@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Producto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <header th:replace="~{barra}"></header>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Registrar Nuevo Pedido</h2>
+
+        <form th:action="@{/GestionZapaterias/Pedidos/GuardarPedido}" th:object="${Pedidoss}" method="post">
+            <input type="hidden" th:field = "${Pedidoss.idPedidos}">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="nombre" class="form-label">Fecha de Entrega:</label>
+                    <input type="date" class="form-control" th:field="*{fechaEntrega}" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="referencia" class="form-label">Estado del pedido:</label>
+                    <select th:field="*{estado_pedido}" required>
+                        <option value="" hidden>Estado del pedido</option>
+                        <option th:each="estado : ${listaEstadoss}" th:value="${estado.key}" th:text="${estado.value}"></option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="referencia" class="form-label">Cliente</label>
+                    <select th:field="*{cliente_proveedor}" required>
+                        <option value="" hidden>Clientes</option>
+                        <option th:each="cliente : ${Clientess}" th:value="${cliente.ID_Cliente_proveedor}" th:text="${cliente.Nombre}"></option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="productoInfo" class="form-label">Productos</label>
+                    <select id="productoInfo" class="form-select">
+                        <option value="" hidden>Selecciona un Producto</option>
+                        <option th:each="producto : ${Productoss}" th:value="${producto.idProductos}" th:text="${producto.Nombre}"></option>
+                    </select>
+                </div>
+                <div class="mt-2">
+                    <button type="button" class="btn btn-success" id="btnAgregarDetalle">
+                        <i class="bi bi-plus-circle"></i> Agregar
+                    </button>
+                </div>
+                <div id="contenedorDetalles" class="mt-4">
+                    <div th:each="detalle, iterStat : ${session.listaDetallesPedido}" class="card mb-3 detalle-item"
+                        th:id="'detalle-' + ${iterStat.count}" th:data-producto="${detalle.productos.idProductos}"
+                        th:data-precio="${detalle.productos.precioUnitario}">
+                        <input type="hidden" name="detalleId" th:value="${detalle.ID_Detalles_pedidos}" class="detalle-id">
+                        <p th:text="${detalle.ID_Detalles_pedidos}"></p>
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${detalle.productos.nombre}"></h5>
+                            <p><strong>Referencia:</strong> <span th:text="${detalle.productos.referencia}"></span></p>
+                            <p><strong>Precio Unitario:</strong> $<span
+                                    th:text="${detalle.productos.precioUnitario}"></span>
+                            </p>
+                
+                            <div class="row mb-2">
+                                <div class="col-md-3">
+                                    <label>Talla:</label>
+                                    <select class="form-select talla-select">
+                                        <option value="" hidden>Seleccione</option>
+                                        <option th:each="talla : ${Tallass}" th:value="${talla.ID_Tallas_productos}"
+                                            th:selected="${talla.ID_Tallas_productos == detalle.tallas_producto.ID_Tallas_productos}"
+                                            th:text="${talla.Numero}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Color:</label>
+                                    <select class="form-select color-select">
+                                        <option value="" hidden>Seleccione</option>
+                                        <option th:each="color : ${Coloress}" th:value="${color.ID_Colores_Productos}"
+                                            th:selected="${color.ID_Colores_Productos == detalle.colores_productos.ID_Colores_Productos}"
+                                            th:text="${color.Descripcion}">
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label>Cantidad:</label>
+                                    <input type="number" min="1" class="form-control cantidad-input" th:value="${detalle.cantidad}">
+                                </div>
+                                <div class="col-md-3 d-flex flex-column justify-content-end">
+                                    <p class="mt-4"><strong>Subtotal:</strong> $<span class="subtotal"
+                                            th:text="${detalle.cantidad * detalle.productos.precioUnitario}"></span></p>
+                                </div>
+                            </div>
+                
+                            <button type="button" class="btn btn-primary btnAgregarServidorEditado" th:attr="data-id=${iterStat.count}">
+                                <i class="bi bi-plus-square"></i> Agregar
+                            </button>
+                
+                            <button type="button" class="btn btn-danger btnEliminarServidorEditado" th:attr="data-id=${iterStat.count}">
+                                <i class="bi bi-trash"></i> Eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="contenedorDetalles" class="mt-4"></div>
+                <h4>Total del pedido: $<span id="totalGeneral">0</span></h4>
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">Guardar Producto</button>
+                <a th:href="@{/GestionZapaterias/Pedidos/0}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+    <footer th:replace="~{piePagina}"></footer>
+    <script th:src="@{/js/app.js}"></script>
+</body>
+</html>

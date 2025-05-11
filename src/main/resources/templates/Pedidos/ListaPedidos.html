@@ -12,47 +12,37 @@
 <body>
     <header th:replace="~{barra}"></header>
     <div class="container mt-5">
-        <h2 class="mb-4">Lista de Proveedores</h2>
+        <h2 class="mb-4">Lista de Pedidos</h2>
         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
             <div class="mb-3">
-                <a class="btn btn-success" th:href="@{/GestionZapaterias/Proveedores/NuevoProveedor}">Agregar
-                    Proveedor</a>
+                <a class="btn btn-success" th:href="@{/GestionZapaterias/Pedidos/NuevoPedido}">Agregar Pedido</a>
             </div>
         </div>
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="table-primary">
                     <tr>
-                        <th>Nombre</th>
-                        <th>Teléfono</th>
-                        <th>Celular</th>
-                        <th>Correo</th>
-                        <th>Dirección</th>
-                        <th>Departamento</th>
-                        <th>Municipio</th>
-                        <th>Tipo Material</th>
+                        <th>Estado</th>
+                        <th>Fecha Entrega</th>
+                        <th>Cliente</th>
+                        <th>Productos</th>
+                        <th>Costo Total</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="entry : ${ProveedoresMap}">
-                        <td th:text="${entry.key.Nombre}"></td>
-                        <td th:text="${entry.key.Telefono}"></td>
-                        <td th:text="${entry.key.Celular}"></td>
-                        <td th:text="${entry.key.Correo}"></td>
-                        <td th:text="${entry.key.Direccion}"></td>
-                        <td th:text="${entry.key.municipio.Departamento.Nombre}"></td>
-                        <td th:text="${entry.key.municipio.Nombre}"></td>
-
-                        <!-- Tipo Material como lista -->
+                    <tr th:each="entry : ${Pedidoss}">
+                    <td th:text="${entry.key.estado_pedido == 1 ? 'Pendiente' : (entry.key.estado_pedido == 2 ? 'Entregado' : 'Cancelado')}"></td>
+                    <td th:text="${entry.key.fechaEntrega}"></td>
+                    <td th:text="${entry.key.cliente_proveedor.Nombre}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="producto : ${entry.value}" th:text="${producto.Nombre}"></li>
+                        </ul>
+                    </td>
+                    <td th:text="${#numbers.formatDecimal(Totales[entry.key], 1, 'COMMA', 2, 'POINT')}"></td>
                         <td>
-                            <ul>
-                                <li th:each="tipo : ${entry.value}" th:text="${tipo.Descripcion}"></li>
-                            </ul>
-                        </td>
-
-                        <td>
-                            <a th:href="@{/GestionZapaterias/Proveedores/EditarProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}"
+                            <a th:href="@{/GestionZapaterias/Pedidos/EditarPedido/{id}(id=${entry.key.idPedidos})}"
                                 class="link-warning link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -64,7 +54,7 @@
                                     <path d="M16 5l3 3" />
                                 </svg>
                             </a>
-                            <a th:href="@{/GestionZapaterias/Proveedores/EliminarProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}"
+                            <a th:href="@{/GestionZapaterias/Pedidos/EliminarPedido/{id}(id=${entry.key.idPedidos})}"
                                 class="link-danger link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -78,12 +68,32 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                 </svg>
                             </a>
-                            <a th:href="@{/GestionZapaterias/Proveedores/VerProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}">Ver</a>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+        <nav>
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${paginaa.first} ? 'disabled'">
+                    <a class="page-link"
+                    th:href="@{|/GestionZapaterias/Pedidos/${paginaa.number - 1}?orden=${orden}&direccion=${direccion}|}">Anterior</a>
+                </li>
+
+                <li class="page-item"
+                    th:each="i : ${#numbers.sequence(0, paginaa.totalPages - 1)}"
+                    th:classappend="${paginaa.number == i} ? 'active'">
+                    <a class="page-link"
+                    th:href="@{|/GestionZapaterias/Pedidos/${i}?orden=${orden}&direccion=${direccion}|}"
+                    th:text="${i + 1}"></a>
+                </li>
+
+                <li class="page-item" th:classappend="${paginaa.last} ? 'disabled'">
+                    <a class="page-link"
+                    th:href="@{|/GestionZapaterias/Pedidos/${paginaa.number + 1}?orden=${orden}&direccion=${direccion}|}">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
     </div>
     <footer th:replace="~{piePagina}"></footer>
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

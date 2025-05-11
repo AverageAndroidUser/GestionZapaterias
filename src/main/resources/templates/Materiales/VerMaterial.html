@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Proveedor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+</head>
+<body>
+    <header th:replace = "~{barra}"></header>
+    <div class="container mt-5" th:object="${Materialess}">
+        <h2 class="mb-4">Materiales</h2>
+            <input type="hidden" th:field="${Materialess.ID_Materiales}">
+            <div class="mb-3">
+                <label for="Nombre" class="form-label">Nombre</label>
+                <p th:text="*{Nombre}"></p>
+            </div>
+            <div class="mb-3">
+                <p>Descripcion</p>
+                <p th:text="*{Descripcion}"></p>
+            </div>
+            <div class="mb-3">
+                <p>Cantidad</p>
+                <p th:text="*{cantidad} + *{tipoMaterial.Unidad_medida}"></p>
+            </div>
+            <div class="mb-3">
+                <p>costoUnidad</p>
+                <p th:text="*{costoUnidad}"></p>
+            </div>
+            <div class="mb-3">
+                <p>Stock Minimo</p>
+                <p th:text="*{stockMinimo}"></p>
+            </div>
+            <div class="mb-3">
+                <p>Tipo Material</p>
+                <p th:text="*{tipoMaterial.Descripcion}"></p>
+            </div>
+            <div class="mb-3">
+                <p>Proveedor</p>
+                <a th:text="${Materialess.clienteProveedores.Nombre}" th:href="@{/GestionZapaterias/Proveedores/VerProveedor/} + ${Materialess.clienteProveedores.ID_Cliente_proveedor}"></a>
+            </div>
+    </div>
+    <footer th:replace="~{piePagina}"></footer>
+</body>
+</html>

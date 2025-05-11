@@ -29,7 +29,7 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/GestionZapaterias/Proveedores")
-public class Cliente_provedorControlador {
+public class ProvedorControlador {
     
     @Autowired Cliente_proveedorRepositorio cliente_proveedorRepositorio;
     @Autowired UsuarioLog usuarioLog;
@@ -37,96 +37,8 @@ public class Cliente_provedorControlador {
     @Autowired Tipo_materialRepositorio tipo_materialRepositorio;
     @Autowired Proveedor_tipo_materialRepositorio proveedor_tipo_materialRepositorio;
 
-    /*List<Proveedor_tipo_material> proveedor_tipo_material_Lista = new ArrayList<>();
-
     @GetMapping("/")
-    public String listaMateriales(Model model) {
-        List<Cliente_proveedor> proveedores = cliente_proveedorRepositorio.findByUsuarios(usuarioLog.correoUsuario(), true);
-        Map<Cliente_proveedor, List<Tipo_material>> proveedorTiposMap = new HashMap<>();
-
-        for (Cliente_proveedor proveedor : proveedores) {
-            List<Proveedor_tipo_material> relaciones = proveedor_tipo_materialRepositorio.findByProveedor(proveedor);
-            List<Tipo_material> tipos = relaciones.stream().map(Proveedor_tipo_material::getTipo_material).collect(Collectors.toList());
-            proveedorTiposMap.put(proveedor, tipos);
-        }
-
-        model.addAttribute("ProveedoresMap", proveedorTiposMap);
-        return "Proveedores/ListaProveedores";
-    }
-
-    @GetMapping("/NuevoProveedor")
-    public String nuevoProveedor(Model model){
-        proveedor_tipo_material_Lista.clear();
-        Cliente_proveedor cliente_proveedor = new Cliente_proveedor();
-        model.addAttribute("Tiposs", tipo_materialRepositorio.findAll());
-        model.addAttribute("Proveedoress", cliente_proveedor);
-        model.addAttribute("Departamentoss", departamentoRepositorio.findAll());
-        return "Proveedores/NuevoProveedor";
-    }
-
-    @GetMapping("/Nuevo/TipoMaterialProveedor/{id_tipoM}")
-    @ResponseBody
-    public void nuevoTipoMatereialProveedor(@PathVariable("id_tipoM") int id_tipoM){
-        Proveedor_tipo_material proTipM = new Proveedor_tipo_material();
-        proTipM.setTipo_material(tipo_materialRepositorio.findById(id_tipoM).get());
-        proveedor_tipo_material_Lista.add(proTipM);
-    }
-
-    @GetMapping("/Eliminar/TipoMaterialProveedor/{id_tipoM}")
-    @ResponseBody
-    public void eliminarTipoMaterialProveedor(@PathVariable("id_tipoM") int id_tipoM){
-        for(int i = 0; i < proveedor_tipo_material_Lista.size(); i++){
-            if(proveedor_tipo_material_Lista.get(i).getTipo_material().getID_Tipo_material() == id_tipoM){
-                proveedor_tipo_material_Lista.remove(i);
-                break;
-            }
-        }
-    }
-
-    //Modificar Cargar valores de tipo material ya seleccionados
-    @GetMapping("/EditarProveedor/{id}")
-    public String editarProveedor(@PathVariable("id") int id, Model model){
-        Cliente_proveedor cliente_proveedor = cliente_proveedorRepositorio.findById(id).get();
-        if(usuarioLog.correoUsuario() == cliente_proveedor.getUsuarios()){
-            model.addAttribute("Tiposs", tipo_materialRepositorio.findAll());
-            model.addAttribute("Departamentoss", departamentoRepositorio.findAll());
-            model.addAttribute("Proveedoress", cliente_proveedor);
-            return "Proveedores/NuevoProveedor";
-        }else{
-            model.addAttribute("error", "Proveedor no encontrado...");
-            return "error";
-        }  
-    }
-
-    @PostMapping("/GuardarProveedor")
-    public String guardarProveedor(Cliente_proveedor cliente_proveedor){
-        cliente_proveedor.setUsuarios(usuarioLog.correoUsuario());
-        cliente_proveedor.setTipo_cliente_proveedor(true);
-        Cliente_proveedor proveedor = cliente_proveedorRepositorio.save(cliente_proveedor);
-
-        for(int i = 0; i < proveedor_tipo_material_Lista.size(); i++){
-            proveedor_tipo_material_Lista.get(i).setCliente_proveedor(proveedor);
-            proveedor_tipo_materialRepositorio.save(proveedor_tipo_material_Lista.get(i));
-        }
-        proveedor_tipo_material_Lista.clear();
-        return "redirect:/GestionZapaterias/Proveedores/";
-    }
-
-    @GetMapping("/EliminarProveedor/{id}")
-    public String eliminarProveedor(@PathVariable("id")int id, Model model){
-        if(usuarioLog.correoUsuario() == cliente_proveedorRepositorio.findById(id).get().getUsuarios()){
-            cliente_proveedorRepositorio.deleteById(id);
-            return "redirect:/GestionZapaterias/Proveedores/";
-        }else{
-            model.addAttribute("error", "Proveedor no encontrado...");
-            return "error";
-        }
-
-    }*/
-
-    //Maneja la lista de materiales por proveedor por Sesion de usuario para evitar conflictos cuando multiples usuarios usen el controlador
-    @GetMapping("/")
-    public String listaMateriales(Model model) {
+    public String listaProveedores(Model model) {
         List<Cliente_proveedor> proveedores = cliente_proveedorRepositorio.findByUsuarios(usuarioLog.correoUsuario(), true);
         Map<Cliente_proveedor, List<Tipo_material>> proveedorTiposMap = new HashMap<>();
 
@@ -231,6 +143,20 @@ public class Cliente_provedorControlador {
         if (optional.isPresent() && optional.get().getUsuarios().equals(usuarioLog.correoUsuario())) {
             cliente_proveedorRepositorio.deleteById(id);
             return "redirect:/GestionZapaterias/Proveedores/";
+        } else {
+            model.addAttribute("error", "Proveedor no encontrado o sin permisos.");
+            return "error";
+        }
+    }
+
+    @GetMapping("/VerProveedor/{id}")
+    public String verProveedor(@PathVariable("id") int id, Model model) {
+        Optional<Cliente_proveedor> proveedor = cliente_proveedorRepositorio.findById(id);
+        if (usuarioLog.correoUsuario().equals(proveedor.get().getUsuarios())) {
+            List<Proveedor_tipo_material> tiposActuales = proveedor_tipo_materialRepositorio.findByProveedor(proveedor.get());
+            model.addAttribute("Proveedoress", proveedor.get());
+            model.addAttribute("Tiposs", tiposActuales);
+            return "Proveedores/VerProveedor";
         } else {
             model.addAttribute("error", "Proveedor no encontrado o sin permisos.");
             return "error";

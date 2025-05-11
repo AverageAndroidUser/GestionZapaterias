@@ -68,15 +68,15 @@
                 </thead>
                 <tbody id="tablaMateriales">
                     <tr th:each="material : ${Materialess.content}">
-                        <td th:text="${material.Nombre}">Nombre</td>
-                        <td th:text="${material.Descripcion}">Descripción</td>
-                        <td th:text="${material.cantidad}">0</td>
-                        <td th:text="${material.costoUnidad}">0</td>
-                        <td th:text="${material.stockMinimo}">0</td>
-                        <td th:text="${material.fechaActualizacion}">Fecha</td>
-                        <td th:text="${material.clienteProveedores.Nombre}">Proveedor</td>
-                        <td th:text="${material.tipoMaterial.Descripcion}">Tipo</td>
-                        <td th:text="${material.tipoMaterial.Unidad_medida}">Tipo</td>
+                        <td th:text="${material.Nombre}"></td>
+                        <td th:text="${material.Descripcion}"></td>
+                        <td th:text="${material.cantidad}"></td>
+                        <td th:text="${material.costoUnidad}"></td>
+                        <td th:text="${material.stockMinimo}"></td>
+                        <td th:text="${material.fechaActualizacion}"></td>
+                        <td th:text="${material.clienteProveedores.Nombre}"></td>
+                        <td th:text="${material.tipoMaterial.Descripcion}"></td>
+                        <td th:text="${material.tipoMaterial.Unidad_medida}"></td>
                         <td>
                             <a th:href="@{/GestionZapaterias/Materiales/EditarMaterial/} + ${material.ID_Materiales}" class="link-warning link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -102,6 +102,7 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                 </svg>
                             </a>
+                            <a th:href="@{/GestionZapaterias/Materiales/VerMaterial/} + ${material.ID_Materiales}">Ver</a>
                         </td>
                     </tr>
                 </tbody>

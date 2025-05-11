@@ -1,6 +1,7 @@
 package com.example.Gestion.Controladores;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -68,9 +69,9 @@ public class MaterialesControlador {
 
     @GetMapping("/EditarMaterial/{id}")
     public String editarMaterial(@PathVariable("id")int id, Model model){
-        Materiales material = materialesRepositorio.findById(id).get();
+        Optional<Materiales> material = materialesRepositorio.findById(id);
         Usuarios ususario = usuarioLog.correoUsuario();
-        if(ususario == material.getUsuarios()){
+        if(ususario.equals(material.get().getUsuarios())){
             model.addAttribute("Materialess",material);
             model.addAttribute("Proveedoress", cliente_proveedorRepositorio.findByUsuarios(ususario,true));
             model.addAttribute("TiposMaterialess", tipo_materialRepositorio.findAll());
@@ -83,11 +84,22 @@ public class MaterialesControlador {
 
     @GetMapping("/EliminarMaterial/{id}")
     public String eliminarMaterial(@PathVariable("id")int id, Model model){
-        Materiales material = materialesRepositorio.findById(id).get();
-        Usuarios ususario = usuarioLog.correoUsuario();
-        if(ususario == material.getUsuarios()){
+        Optional<Materiales> material = materialesRepositorio.findById(id);
+        if(usuarioLog.correoUsuario().equals(material.get().getUsuarios())){
             materialesRepositorio.deleteById(id);
             return "redirect:/GestionZapaterias/Materiales/0";
+        }else{
+            model.addAttribute("error", "Material no encontrado...");
+            return "error";
+        }
+    }
+
+    @GetMapping("/VerMaterial/{id}")
+    public String verMaterial(@PathVariable("id")int id, Model model){
+        Optional<Materiales> material = materialesRepositorio.findById(id);
+        if(usuarioLog.correoUsuario().equals(material.get().getUsuarios())){
+            model.addAttribute("Materialess",material.get());
+            return "Materiales/VerMaterial";
         }else{
             model.addAttribute("error", "Material no encontrado...");
             return "error";

@@ -12,11 +12,10 @@
 <body>
     <header th:replace="~{barra}"></header>
     <div class="container mt-5">
-        <h2 class="mb-4">Lista de Proveedores</h2>
+        <h2 class="mb-4">Lista de Clientes</h2>
         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
             <div class="mb-3">
-                <a class="btn btn-success" th:href="@{/GestionZapaterias/Proveedores/NuevoProveedor}">Agregar
-                    Proveedor</a>
+                <a class="btn btn-success" th:href="@{/GestionZapaterias/Clientes/NuevoCliente}">Agregar Cliente</a>
             </div>
         </div>
         <div class="table-responsive">
@@ -30,29 +29,20 @@
                         <th>Dirección</th>
                         <th>Departamento</th>
                         <th>Municipio</th>
-                        <th>Tipo Material</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="entry : ${ProveedoresMap}">
-                        <td th:text="${entry.key.Nombre}"></td>
-                        <td th:text="${entry.key.Telefono}"></td>
-                        <td th:text="${entry.key.Celular}"></td>
-                        <td th:text="${entry.key.Correo}"></td>
-                        <td th:text="${entry.key.Direccion}"></td>
-                        <td th:text="${entry.key.municipio.Departamento.Nombre}"></td>
-                        <td th:text="${entry.key.municipio.Nombre}"></td>
-
-                        <!-- Tipo Material como lista -->
+                    <tr th:each="cliente : ${Clientess}">
+                        <td th:text="${cliente.Nombre}"></td>
+                        <td th:text="${cliente.Telefono}"></td>
+                        <td th:text="${cliente.Celular}"></td>
+                        <td th:text="${cliente.Correo}"></td>
+                        <td th:text="${cliente.Direccion}"></td>
+                        <td th:text="${cliente.municipio.Departamento.Nombre}"></td>
+                        <td th:text="${cliente.municipio.Nombre}"></td>
                         <td>
-                            <ul>
-                                <li th:each="tipo : ${entry.value}" th:text="${tipo.Descripcion}"></li>
-                            </ul>
-                        </td>
-
-                        <td>
-                            <a th:href="@{/GestionZapaterias/Proveedores/EditarProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}"
+                            <a th:href="@{/GestionZapaterias/Clientes/EditarCliente/} + ${cliente.ID_Cliente_proveedor}"
                                 class="link-warning link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -64,7 +54,7 @@
                                     <path d="M16 5l3 3" />
                                 </svg>
                             </a>
-                            <a th:href="@{/GestionZapaterias/Proveedores/EliminarProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}"
+                            <a th:href="@{/GestionZapaterias/Clientes/EliminarCliente/} + ${cliente.ID_Cliente_proveedor}"
                                 class="link-danger link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -78,7 +68,7 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                 </svg>
                             </a>
-                            <a th:href="@{/GestionZapaterias/Proveedores/VerProveedor/{id}(id=${entry.key.ID_Cliente_proveedor})}">Ver</a>
+                            <a th:href="@{/GestionZapaterias/Clientes/VerCliente/} + ${cliente.ID_Cliente_proveedor}">Ver</a>
                         </td>
                     </tr>
                 </tbody>

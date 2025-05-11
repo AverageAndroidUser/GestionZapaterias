@@ -31,8 +31,7 @@
                     <tr>
                         <th><a>Nombre</a></th>
                         <th>Descripción</th>
-                        <th><a
-                                th:href="@{|/GestionZapaterias/Productos/0?orden=precioUnitario&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Precio
+                        <th><a th:href="@{|/GestionZapaterias/Productos/0?orden=precioUnitario&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Precio
                                 Unitario</a></th>
                         <th>Referencia</th>
                         <th>Tipo de Producto</th>
@@ -73,6 +72,7 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                 </svg>
                             </a>
+                            <a th:href="@{/GestionZapaterias/Productos/VerProducto/} + ${producto.idProductos}">Ver</a>
                         </td>
                     </tr>
                 </tbody>

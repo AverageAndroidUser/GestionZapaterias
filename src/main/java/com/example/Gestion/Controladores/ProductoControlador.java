@@ -1,6 +1,7 @@
 package com.example.Gestion.Controladores;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +22,7 @@ import com.example.Gestion.Entidades.Productos.Productos;
 import com.example.Gestion.Entidades.Productos.ProductosRepositorio;
 import com.example.Gestion.Entidades.TipoProducto.Tipo_productoRepositorio;
 import com.example.Gestion.Entidades.Usuarios.UsuarioLog;
+import com.example.Gestion.Entidades.Usuarios.Usuarios;
 
 @Controller
 @RequestMapping("GestionZapaterias/Productos")
@@ -60,10 +62,11 @@ public class ProductoControlador {
 
     @GetMapping("/EditarProducto/{id}")
     public String editarProduto(@PathVariable("id") int id, Model model){
-        Productos producto = productosRepositorio.findById(id).get();
-        if(usuarioLog.correoUsuario() == producto.getUsuario()){
+        Optional<Productos> producto = productosRepositorio.findById(id);
+        Usuarios usuario = usuarioLog.correoUsuario();
+        if(usuario.equals(producto.get().getUsuario())){
             model.addAttribute("Productoss", producto);
-            model.addAttribute("Materialess", materialesRepositorio.findByUsuarioTipoM(usuarioLog.correoUsuario()));
+            model.addAttribute("Materialess", materialesRepositorio.findByUsuarioTipoM(usuario));
             model.addAttribute("Tiposs", tipo_productoRepositorio.findAll());
             return "Productos/NuevoProducto";
         }else{
@@ -74,8 +77,8 @@ public class ProductoControlador {
 
     @GetMapping("/EliminarProducto/{id}")
     public String eliminarProducto(@PathVariable("id") int id, Model model){
-        Productos producto = productosRepositorio.findById(id).get();
-        if(usuarioLog.correoUsuario() == producto.getUsuario()){
+        Optional<Productos> producto = productosRepositorio.findById(id);
+        if(usuarioLog.correoUsuario().equals(producto.get().getUsuario())){
             productosRepositorio.deleteById(id);
             return "redirect:/GestionZapaterias/Productos/0";
         }else{
@@ -90,4 +93,17 @@ public class ProductoControlador {
         productosRepositorio.save(productos);
         return "redirect:/GestionZapaterias/Productos/0";
     }
+
+    @GetMapping("/VerProducto/{id}")
+    public String verProducto(@PathVariable("id") int id, Model model){
+        Optional<Productos> producto = productosRepositorio.findById(id);
+        if(usuarioLog.correoUsuario().equals(producto.get().getUsuario())){
+            model.addAttribute("Productoss", producto.get());
+            return "Productos/VerProducto";
+        }else{
+            model.addAttribute("error", "Material no encontrado...");
+            return "error";
+        }
+    }
+
 }
