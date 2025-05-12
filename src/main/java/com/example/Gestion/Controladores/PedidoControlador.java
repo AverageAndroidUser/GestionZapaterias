@@ -1,6 +1,7 @@
 package com.example.Gestion.Controladores;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -104,58 +104,49 @@ public class PedidoControlador {
 
     @GetMapping("/DetallePedido/agregarDetalle/{idProducto}/{idTalla}/{idColor}/{cantidad}/{idDetallePedido}")
     @ResponseBody
-    public void nuevoDetallePedido(@PathVariable("idProducto") int idProducto, 
-        @PathVariable("idTalla") int idTalla, @PathVariable("idColor") int idColor, 
-        @PathVariable("cantidad") int cantidad,
-        @PathVariable("idDetallePedido") Optional<Integer> idDetallePedido,
-        HttpSession session) {
-        
-        System.out.println("Detalle: "+ idDetallePedido + "Color: " + idColor + " Talla: " + idTalla + " Producto: " + idProducto + " Cantidad: " + cantidad);
+    public void nuevoDetallePedido(@PathVariable int idProducto, @PathVariable int idTalla, @PathVariable int idColor,
+            @PathVariable int cantidad, @PathVariable Optional<Integer> idDetallePedido, HttpSession session) {
 
         List<Detalles_pedidos> lista = (List<Detalles_pedidos>) session.getAttribute("listaDetallesPedido");
-        if (lista == null) lista = new ArrayList<>();
-
-        Detalles_pedidos detalleAActualizar = null;
-
-        // Buscar por ID si viene (para editar)
-        if (idDetallePedido.isPresent()) {
-            System.out.println("-----------------------------");
-            detalleAActualizar = lista.stream()
-                .filter(d -> idDetallePedido.get().equals(d.getID_Detalles_pedidos()))
-                .findFirst().orElse(null);
+        if (lista == null) {
+            lista = new ArrayList<>();
         }
 
-        if (detalleAActualizar != null) {
-            System.out.println("-----------Actualizando detalle existente-----------");
-            detalleAActualizar.setProductos(productosRepositorio.findById(idProducto).get());
-            detalleAActualizar.setTallas_producto(Tallas_productosRepositorio.findById(idTalla).get());
-            detalleAActualizar.setColores_productos(Colores_ProcuctosRepositorio.findById(idColor).get());
-            detalleAActualizar.setCantidad(cantidad);
-        } else {
-            System.out.println("-----------Busqueda local-----------");
-            // buscar si ya existe con esos valores
-            Optional<Detalles_pedidos> existente = lista.stream()
-                .filter(d -> d.getProductos().getIdProductos() == idProducto 
-                        && d.getTallas_producto().getID_Tallas_productos() == idTalla 
-                        && d.getColores_productos().getID_Colores_Productos() == idColor)
-                .findFirst();
-            //System.out.println("---> " + existente.get().getID_Detalles_pedidos());
-            if (existente.isPresent()) {
-                System.out.println("-----------Actualiza cantidad-----------");
-                existente.get().setCantidad(cantidad);
-            } else {
-                 System.out.println("-----------Crea nuevo-----------");
-                Detalles_pedidos nuevo = new Detalles_pedidos();
-                nuevo.setProductos(productosRepositorio.findById(idProducto).get());
-                nuevo.setTallas_producto(Tallas_productosRepositorio.findById(idTalla).get());
-                nuevo.setColores_productos(Colores_ProcuctosRepositorio.findById(idColor).get());
-                nuevo.setCantidad(cantidad);
-                lista.add(nuevo);
+        // Si viene un ID de detalle, intentamos actualizar
+        if (idDetallePedido.isPresent()) {
+            for (Detalles_pedidos detalle : lista) {
+                if (idDetallePedido.get().equals(detalle.getID_Detalles_pedidos())) {
+                    detalle.setProductos(productosRepositorio.findById(idProducto).orElse(null));
+                    detalle.setTallas_producto(Tallas_productosRepositorio.findById(idTalla).orElse(null));
+                    detalle.setColores_productos(Colores_ProcuctosRepositorio.findById(idColor).orElse(null));
+                    detalle.setCantidad(cantidad);
+                    session.setAttribute("listaDetallesPedido", lista);
+                    return;
+                }
             }
+        }
+
+        // Si no hay ID o no se encontró, se busca por producto + talla + color
+        Optional<Detalles_pedidos> existente = lista.stream()
+                .filter(d -> d.getProductos().getIdProductos() == idProducto &&
+                            d.getTallas_producto().getID_Tallas_productos() == idTalla &&
+                            d.getColores_productos().getID_Colores_Productos() == idColor)
+                .findFirst();
+
+        if (existente.isPresent()) {
+            existente.get().setCantidad(cantidad);
+        } else {
+            Detalles_pedidos nuevo = new Detalles_pedidos();
+            nuevo.setProductos(productosRepositorio.findById(idProducto).orElse(null));
+            nuevo.setTallas_producto(Tallas_productosRepositorio.findById(idTalla).orElse(null));
+            nuevo.setColores_productos(Colores_ProcuctosRepositorio.findById(idColor).orElse(null));
+            nuevo.setCantidad(cantidad);
+            lista.add(nuevo);
         }
 
         session.setAttribute("listaDetallesPedido", lista);
     }
+
 
 
     @GetMapping("/DetallePedido/eliminarDetalle/{idProducto}/{idTalla}/{idColor}/{idDetallePedido}")
@@ -222,40 +213,63 @@ public class PedidoControlador {
     }
 
     @GetMapping("/{pagina}")
-    public String listaPedidos( @PathVariable("pagina") int pagina,  @RequestParam(defaultValue = "10") int tamaño,
-            @RequestParam(defaultValue = "idPedidos") String orden, @RequestParam(defaultValue = "asc") String direccion,  Model model) {
+    public String listaPedidos(@PathVariable("pagina") int pagina, @RequestParam(defaultValue = "10") int tamaño,
+        @RequestParam(defaultValue = "idPedidos") String orden, @RequestParam(defaultValue = "asc") String direccion,
+        @RequestParam(required = false) Byte estado, Model model) {
 
-        Sort sort = Sort.by(direccion.equalsIgnoreCase("asc") ? Sort.Direction.ASC : Sort.Direction.DESC, orden);
-        Pageable pageable = PageRequest.of(pagina, tamaño, sort);
+        Pageable pageable = PageRequest.of(pagina, tamaño);
 
-        Page<Pedidos> paginaPedidos = pedidosRepositorio.findByUsuario(usuarioLog.correoUsuario(), pageable);
+        Page<Pedidos> paginaPedidos;
 
-        // Mapa para asociar cada pedido con su lista de productos
+        if (estado != null) {
+            paginaPedidos = pedidosRepositorio.findByUsuarioAndEstado(usuarioLog.correoUsuario(), estado, pageable);
+        } else {
+            paginaPedidos = pedidosRepositorio.findByUsuario(usuarioLog.correoUsuario(), pageable);
+        }
+
+        // Mapas para detalles y totales
         Map<Pedidos, List<Productos>> detallesPedidos = new LinkedHashMap<>();
-
         Map<Pedidos, Double> totalPorPedido = new LinkedHashMap<>();
 
         for (Pedidos pedido : paginaPedidos.getContent()) {
             List<Detalles_pedidos> detalles = detalles_pedidoRepositorio.findByPedidos(pedido);
             double total = detalles.stream()
-                .mapToDouble(d -> d.getCantidad() * d.getProductos().getPrecioUnitario())
-                .sum();
+                    .mapToDouble(d -> d.getCantidad() * d.getProductos().getPrecioUnitario())
+                    .sum();
             detallesPedidos.put(pedido, detalles.stream().map(Detalles_pedidos::getProductos).collect(Collectors.toList()));
             totalPorPedido.put(pedido, total);
         }
 
-        for (Pedidos pedido : paginaPedidos.getContent()) {
-            List<Detalles_pedidos> detalles = detalles_pedidoRepositorio.findByPedidos(pedido);
-            List<Productos> productos = detalles.stream()
-                .map(Detalles_pedidos::getProductos)
-                .collect(Collectors.toList());
-            detallesPedidos.put(pedido, productos);
+        // Orden por costo total si se solicitó
+        if (orden.equals("costoTotal")) {
+            Comparator<Map.Entry<Pedidos, Double>> comparator = Map.Entry.comparingByValue();
+            if (direccion.equalsIgnoreCase("desc")) {
+                comparator = comparator.reversed();
+            }
+
+            List<Map.Entry<Pedidos, Double>> ordenados = new ArrayList<>(totalPorPedido.entrySet());
+            ordenados.sort(comparator);
+
+            Map<Pedidos, List<Productos>> detallesOrdenados = new LinkedHashMap<>();
+            Map<Pedidos, Double> totalesOrdenados = new LinkedHashMap<>();
+            for (Map.Entry<Pedidos, Double> entry : ordenados) {
+                detallesOrdenados.put(entry.getKey(), detallesPedidos.get(entry.getKey()));
+                totalesOrdenados.put(entry.getKey(), entry.getValue());
+            }
+            detallesPedidos = detallesOrdenados;
+            totalPorPedido = totalesOrdenados;
         }
-        model.addAttribute("Pedidoss", detallesPedidos); 
+
+        model.addAttribute("Pedidoss", detallesPedidos);
         model.addAttribute("Totales", totalPorPedido);
         model.addAttribute("paginaa", paginaPedidos);
+        model.addAttribute("orden", orden);
+        model.addAttribute("direccion", direccion);
+        model.addAttribute("estado", estado); // para mantener selección en el filtro
         return "Pedidos/ListaPedidos";
     }
+
+
     //Editar pedido
     @GetMapping("/EditarPedido/{id}")
     public String editarPedido(@PathVariable("id") int id, Model model, HttpSession session){
@@ -279,6 +293,24 @@ public class PedidoControlador {
             model.addAttribute("Productoss", productosRepositorio.findByUsuarioList(usuario));
             return "Pedidos/NuevoPedido";
 
+        }else{
+            model.addAttribute("error", "Pedido no encontrado, o sin permisos.");
+            return "error";
+        }
+    }
+
+    @GetMapping("/VerPedido/{id}")
+    public String verPedido(@PathVariable("id") int id, Model model){
+        Optional<Pedidos> pedido = pedidosRepositorio.findById(id);
+        if(usuarioLog.correoUsuario().equals(pedido.get().getUsuario())){
+            List<Detalles_pedidos> detalles = detalles_pedidoRepositorio.findByPedidos(pedido.get());
+            double total = detalles.stream()
+            .mapToDouble(d -> d.getCantidad() * d.getProductos().getPrecioUnitario())
+            .sum();
+            model.addAttribute("TotalPedido", total);
+            model.addAttribute("Detalless", detalles);
+            model.addAttribute("Pedidoss", pedido.get());
+            return "Pedidos/VerPedido";
         }else{
             model.addAttribute("error", "Pedido no encontrado, o sin permisos.");
             return "error";

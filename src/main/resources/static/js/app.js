@@ -212,42 +212,45 @@ document.getElementById("btnAgregarDetalle").addEventListener("click", function 
 });
 
 document.addEventListener("click", function (e) {
-    // Botón Agregar al servidor
-    if (e.target.closest('.btnAgregarServidor')) {
-        const btn = e.target.closest(".btnAgregarServidor");
-        const idDetalle = btn.dataset.id;
-        const contenedor = document.getElementById(`detalle-${idDetalle}`);
+    const agregarBtn = e.target.closest('.btnAgregarServidor, .btnAgregarServidorEditado');
+    const eliminarBtn = e.target.closest('.btnEliminarServidor, .btnEliminarServidorEditado');
+
+    if (agregarBtn) {
+        const contenedor = agregarBtn.closest(".detalle-item") || document.getElementById(`detalle-${agregarBtn.dataset.id}`);
         const idProducto = contenedor.dataset.producto;
         const idTalla = contenedor.querySelector(".talla-select").value;
         const idColor = contenedor.querySelector(".color-select").value;
         const cantidad = parseInt(contenedor.querySelector(".cantidad-input").value || "1");
         const precio = parseFloat(contenedor.dataset.precio);
 
+        // Obtener ID del detalle
+        const inputIdDetalle = contenedor.querySelector(".detalle-id");
+        const idDetalle = inputIdDetalle ? inputIdDetalle.value : agregarBtn.dataset.id;
+
         if (!idTalla || !idColor || cantidad <= 0) {
             alert("Seleccione talla, color y cantidad antes de agregar.");
             return;
         }
+
         fetch(`/GestionZapaterias/Pedidos/DetallePedido/agregarDetalle/${idProducto}/${idTalla}/${idColor}/${cantidad}/${idDetalle}`)
             .then(() => {
-                // Actualiza subtotal
                 const subtotal = cantidad * precio;
                 contenedor.querySelector(".subtotal").textContent = subtotal.toLocaleString();
                 actualizarTotales();
-
-                // Desactiva el botón Agregar
-                btn.disabled = true;
+                agregarBtn.disabled = true;
             })
             .catch(err => console.error("Error al agregar:", err));
     }
 
-    // Botón Eliminar
-    if (e.target.closest('.btnEliminarServidor')) {
-        const btn = e.target.closest(".btnEliminarServidor");
-        const idDetalle = btn.dataset.id;
-        const contenedor = document.getElementById(`detalle-${idDetalle}`);
+    if (eliminarBtn) {
+        const contenedor = eliminarBtn.closest(".detalle-item") || document.getElementById(`detalle-${eliminarBtn.dataset.id}`);
         const idProducto = contenedor.dataset.producto;
         const idTalla = contenedor.querySelector(".talla-select").value;
         const idColor = contenedor.querySelector(".color-select").value;
+
+        // Obtener ID del detalle
+        const inputIdDetalle = contenedor.querySelector(".detalle-id");
+        const idDetalle = inputIdDetalle ? inputIdDetalle.value : eliminarBtn.dataset.id;
 
         if (idTalla && idColor) {
             fetch(`/GestionZapaterias/Pedidos/DetallePedido/eliminarDetalle/${idProducto}/${idTalla}/${idColor}/${idDetalle}`)
@@ -262,6 +265,7 @@ document.addEventListener("click", function (e) {
         }
     }
 });
+
 
 // Recalcula subtotales y total general
 function actualizarTotales() {
@@ -277,55 +281,3 @@ function actualizarTotales() {
     document.getElementById("totalGeneral").textContent = total.toLocaleString();
 }
 //----------------------------FIN PEDIDOS----------------------------//
-
-document.addEventListener("click", function (e) {
-    // Botón Agregar al servidor
-    if (e.target.closest('.btnAgregarServidorEditado')) {
-        const btn = e.target.closest(".btnAgregarServidorEditado");
-        const idDetalle = btn.dataset.id;
-        const contenedor = document.getElementById(`detalle-${idDetalle}`);
-        const idProducto = contenedor.dataset.producto;
-        const idTalla = contenedor.querySelector(".talla-select").value;
-        const idColor = contenedor.querySelector(".color-select").value;
-        const cantidad = parseInt(contenedor.querySelector(".cantidad-input").value || "1");
-        const precio = parseFloat(contenedor.dataset.precio);
-
-        if (!idTalla || !idColor || cantidad <= 0) {
-            alert("Seleccione talla, color y cantidad antes de agregar.");
-            return;
-        }
-        fetch(`/GestionZapaterias/Pedidos/DetallePedido/agregarDetalle/${idProducto}/${idTalla}/${idColor}/${cantidad}/${idDetalle}`)
-            .then(() => {
-                // Actualiza subtotal
-                const subtotal = cantidad * precio;
-                contenedor.querySelector(".subtotal").textContent = subtotal.toLocaleString();
-                actualizarTotales();
-
-                // Desactiva el botón Agregar
-                btn.disabled = true;
-            })
-            .catch(err => console.error("Error al agregar:", err));
-    }
-
-    // Botón Eliminar
-    if (e.target.closest('.btnEliminarServidorEditado')) {
-        const btn = e.target.closest(".btnEliminarServidorEditado");
-        const contenedor = btn.closest(".detalle-item");
-        const idDetalle = contenedor.querySelector(".detalle-id").value; // Cambiado para tomar el valor del input hidden
-        const idProducto = contenedor.dataset.producto;
-        const idTalla = contenedor.querySelector(".talla-select").value;
-        const idColor = contenedor.querySelector(".color-select").value;
-
-        if (idTalla && idColor) {
-            fetch(`/GestionZapaterias/Pedidos/DetallePedido/eliminarDetalle/${idProducto}/${idTalla}/${idColor}/${idDetalle}`)
-                .then(() => {
-                    contenedor.remove();
-                    actualizarTotales();
-                })
-                .catch(err => console.error("Error al eliminar:", err));
-        } else {
-            contenedor.remove();
-            actualizarTotales();
-        }
-    }
-});

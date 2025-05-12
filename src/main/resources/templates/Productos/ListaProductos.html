@@ -31,8 +31,10 @@
                     <tr>
                         <th><a>Nombre</a></th>
                         <th>Descripción</th>
-                        <th><a th:href="@{|/GestionZapaterias/Productos/0?orden=precioUnitario&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Precio
-                                Unitario</a></th>
+                        <th><a th:href="@{|/GestionZapaterias/Productos/0?orden=precioUnitario&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Precio Unitario
+                            <i th:if="${orden == 'precioUnitario'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                            </a>
+                        </th>
                         <th>Referencia</th>
                         <th>Tipo de Producto</th>
                         <th>Material</th>

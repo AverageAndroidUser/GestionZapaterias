@@ -18,15 +18,48 @@
                 <a class="btn btn-success" th:href="@{/GestionZapaterias/Pedidos/NuevoPedido}">Agregar Pedido</a>
             </div>
         </div>
+        <form class="mb-3" method="get" th:action="@{/GestionZapaterias/Pedidos/0}">
+            <div class="row g-2 align-items-end">
+                <div class="col-md-3">
+                    <label for="estado" class="form-label">Filtrar por Estado:</label>
+                    <select class="form-select" id="estado" name="estado">
+                        <option value="" disabled selected>ESTADO</option>
+                        <option th:value="1" th:selected="${estado == 1}">Pendiente</option>
+                        <option th:value="2" th:selected="${estado == 2}">Entregado</option>
+                        <option th:value="3" th:selected="${estado == 3}">Cancelado</option>
+                    </select>
+                </div>
+                <input type="hidden" name="orden" th:value="${orden}" />
+                <input type="hidden" name="direccion" th:value="${direccion}" />
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Filtrar</button>
+                </div>
+            </div>
+        </form>
+
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="table-primary">
                     <tr>
                         <th>Estado</th>
-                        <th>Fecha Entrega</th>
+                        <th>   
+                            <a th:href="${estado != null} ?
+                                        @{|/GestionZapaterias/Pedidos/0?orden=fechaEntrega&direccion=${direccion == 'asc' ? 'desc' : 'asc'}&estado=${estado}|} :
+                                        @{|/GestionZapaterias/Pedidos/0?orden=fechaEntrega&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">
+                                Fecha Entrega
+                                <i th:if="${orden == 'fechaEntrega'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                            </a>
+                        </th>
                         <th>Cliente</th>
                         <th>Productos</th>
-                        <th>Costo Total</th>
+                        <th>
+                            <a th:href="${estado != null} ?
+                                        @{|/GestionZapaterias/Pedidos/0?orden=costoTotal&direccion=${direccion == 'asc' ? 'desc' : 'asc'}&estado=${estado}|} :
+                                        @{|/GestionZapaterias/Pedidos/0?orden=costoTotal&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">
+                                Costo Total
+                                <i th:if="${orden == 'costoTotal'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                            </a>
+                        </th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -68,6 +101,7 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                 </svg>
                             </a>
+                            <a th:href="@{/GestionZapaterias/Pedidos/VerPedido/{id}(id=${entry.key.idPedidos})}">Ver</a>
                         </td>
                     </tr>
                 </tbody>

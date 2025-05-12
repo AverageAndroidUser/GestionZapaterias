@@ -49,17 +49,25 @@
                         <th><a>Nombre</a></th>
                         <th>Descripción</th>
                         <th><a
-                                th:href="@{|/GestionZapaterias/Materiales/0?orden=cantidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Cantidad</a>
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=cantidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Cantidad
+                                <i th:if="${orden == 'cantidad'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                            </a>
                         </th>
                         <th><a
-                                th:href="@{|/GestionZapaterias/Materiales/0?orden=costoUnidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Costo
-                                Unidad</a></th>
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=costoUnidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}"> Costo Unidad
+                                <i th:if="${orden == 'costoUnidad'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                            </a>
+                        </th>
                         <th><a
-                                th:href="@{|/GestionZapaterias/Materiales/0?orden=stockMinimo&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Stock
-                                Mínimo</a></th>
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=stockMinimo&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Stock Mínimo
+                                <i th:if="${orden == 'stockMinimo'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                            </a>
+                        </th>
                         <th><a
-                                th:href="@{|/GestionZapaterias/Materiales/0?orden=fechaActualizacion&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Fecha
-                                Actualización</a></th>
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=fechaActualizacion&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Fecha Actualización
+                                <i th:if="${orden == 'fechaActualizacion'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                            </a>
+                        </th>
                         <th>Proveedor</th>
                         <th>Tipo</th>
                         <th>Unidad</th>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ver Pedido</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body>
+<header th:replace="~{barra}"></header>
+<div class="container mt-4">
+    <h2 class="mb-4">Información del Pedido</h2>
+
+    <!-- Información general del pedido -->
+    <div class="card mb-4">
+        <div class="card-body" th:object="${Pedidoss}">
+            <p><strong>ID Pedido:</strong> <span th:text="${Pedidoss.idPedidos}"></span></p>
+            <p><strong>Fecha de Entrega:</strong> <span th:text="${Pedidoss.fechaEntrega}"></span></p>
+            <p><strong>Estado:</strong> 
+               <span th:switch="${Pedidoss.estado_pedido}">
+                    <span th:case="1">Pendiente</span>
+                    <span th:case="2">Entregado</span>
+                    <span th:case="3">Cancelado</span>
+                </span>
+            </p>
+            <p><strong>Cliente:</strong> 
+                <a th:href="@{/GestionZapaterias/Clientes/VerCliente/} + ${Pedidoss.cliente_proveedor.ID_Cliente_proveedor}"><span th:text="${Pedidoss.cliente_proveedor.Nombre}"></span></a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Detalles del pedido -->
+    <h4>Productos en el Pedido</h4>
+    <table class="table table-bordered">
+        <thead class="table-light">
+        <tr>
+            <th>#</th>
+            <th>Producto</th>
+            <th>Talla</th>
+            <th>Color</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Subtotal</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="detalle, iterStat : ${Detalless}">
+            <td th:text="${iterStat.index + 1}"></td>
+            <td>
+                <a th:text="${detalle.productos.Nombre}" th:href="@{/GestionZapaterias/Productos/VerProducto/} + ${detalle.productos.idProductos}"></a>
+            </td>
+            <td th:text="${detalle.tallas_producto.Numero}"></td>
+            <td th:text="${detalle.colores_productos.Descripcion}"></td>
+            <td th:text="${detalle.cantidad}"></td>
+            <td th:text="${detalle.productos.precioUnitario}"></td>
+            <td th:text="${detalle.cantidad * detalle.productos.precioUnitario}"></td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <td colspan="6" class="text-end"><strong>Total:</strong></td>
+            <td>
+                <p>Total: <span th:text="${#numbers.formatDecimal(TotalPedido, 1, 'POINT', 2, 'COMMA')}"></span></p>
+            </td>
+        </tr>
+        </tfoot>
+    </table>
+    <a th:href="@{/GestionZapaterias/Pedidos/0}" class="btn btn-secondary">Volver a pedidos</a>
+</div>
+    <footer th:replace="~{piePagina}"></footer>
+</body>
+</html>
