@@ -14,50 +14,54 @@
     <div class="container mt-5">
         <h2 class="mb-4">Lista de Pedidos</h2>
         <div class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center">
+            <form class="mb-3" method="get" th:action="@{/GestionZapaterias/Pedidos/0}">
+                <div class="row w-100 g-2 align-items-end">
+                    <div class="col">
+                        <label for="estado" class="form-label">Filtrar por Estado:</label>
+                        <select class="form-select" id="estado" name="estado">
+                            <option value="" disabled selected>ESTADO</option>
+                            <option th:value="1" th:selected="${estado == 1}">Pendiente</option>
+                            <option th:value="2" th:selected="${estado == 2}">Entregado</option>
+                            <option th:value="3" th:selected="${estado == 3}">Cancelado</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="orden" th:value="${orden}" />
+                    <input type="hidden" name="direccion" th:value="${direccion}" />
+                    <div class="col col-md-2">
+                        <button type="submit" class="btn btn-primary">Filtrar</button>
+                    </div>
+                </div>
+            </form>
             <div class="mb-3">
                 <a class="btn btn-success" th:href="@{/GestionZapaterias/Pedidos/NuevoPedido}">Agregar Pedido</a>
             </div>
         </div>
-        <form class="mb-3" method="get" th:action="@{/GestionZapaterias/Pedidos/0}">
-            <div class="row g-2 align-items-end">
-                <div class="col-md-3">
-                    <label for="estado" class="form-label">Filtrar por Estado:</label>
-                    <select class="form-select" id="estado" name="estado">
-                        <option value="" disabled selected>ESTADO</option>
-                        <option th:value="1" th:selected="${estado == 1}">Pendiente</option>
-                        <option th:value="2" th:selected="${estado == 2}">Entregado</option>
-                        <option th:value="3" th:selected="${estado == 3}">Cancelado</option>
-                    </select>
-                </div>
-                <input type="hidden" name="orden" th:value="${orden}" />
-                <input type="hidden" name="direccion" th:value="${direccion}" />
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary">Filtrar</button>
-                </div>
-            </div>
-        </form>
 
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead class="table-primary">
                     <tr>
                         <th>Estado</th>
-                        <th>   
-                            <a th:href="${estado != null} ?
+                        <th>
+                            <a
+                                th:href="${estado != null} ?
                                         @{|/GestionZapaterias/Pedidos/0?orden=fechaEntrega&direccion=${direccion == 'asc' ? 'desc' : 'asc'}&estado=${estado}|} :
                                         @{|/GestionZapaterias/Pedidos/0?orden=fechaEntrega&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">
                                 Fecha Entrega
-                                <i th:if="${orden == 'fechaEntrega'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                <i th:if="${orden == 'fechaEntrega'}"
+                                    th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                             </a>
                         </th>
                         <th>Cliente</th>
                         <th>Productos</th>
                         <th>
-                            <a th:href="${estado != null} ?
+                            <a
+                                th:href="${estado != null} ?
                                         @{|/GestionZapaterias/Pedidos/0?orden=costoTotal&direccion=${direccion == 'asc' ? 'desc' : 'asc'}&estado=${estado}|} :
                                         @{|/GestionZapaterias/Pedidos/0?orden=costoTotal&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">
                                 Costo Total
-                                <i th:if="${orden == 'costoTotal'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                <i th:if="${orden == 'costoTotal'}"
+                                    th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                             </a>
                         </th>
                         <th>Acciones</th>
@@ -65,17 +69,20 @@
                 </thead>
                 <tbody>
                     <tr th:each="entry : ${Pedidoss}">
-                    <td th:text="${entry.key.estado_pedido == 1 ? 'Pendiente' : (entry.key.estado_pedido == 2 ? 'Entregado' : 'Cancelado')}"></td>
-                    <td th:text="${entry.key.fechaEntrega}"></td>
-                    <td th:text="${entry.key.cliente_proveedor.Nombre}"></td>
-                    <td>
-                        <ul>
-                            <li th:each="producto : ${entry.value}" th:text="${producto.Nombre}"></li>
-                        </ul>
-                    </td>
-                    <td th:text="${#numbers.formatDecimal(Totales[entry.key], 1, 'COMMA', 2, 'POINT')}"></td>
+                        <td
+                            th:text="${entry.key.estado_pedido == 1 ? 'Pendiente' : (entry.key.estado_pedido == 2 ? 'Entregado' : 'Cancelado')}">
+                        </td>
+                        <td th:text="${entry.key.fechaEntrega}"></td>
+                        <td th:text="${entry.key.cliente_proveedor.Nombre}"></td>
                         <td>
-                            <a th:href="@{/GestionZapaterias/Pedidos/EditarPedido/{id}(id=${entry.key.idPedidos})}"
+                            <ul>
+                                <li th:each="producto : ${entry.value}" th:text="${producto.Nombre}"></li>
+                            </ul>
+                        </td>
+                        <td th:text="${#numbers.formatDecimal(Totales[entry.key], 1, 'COMMA', 2, 'POINT')}"></td>
+                        <td>
+                            <a th:if="${entry.key.estado_pedido == 1 or entry.key.estado_pedido == 3}"
+                                th:href="@{/GestionZapaterias/Pedidos/EditarPedido/{id}(id=${entry.key.idPedidos})}"
                                 class="link-warning link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -101,7 +108,18 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                 </svg>
                             </a>
-                            <a th:href="@{/GestionZapaterias/Pedidos/VerPedido/{id}(id=${entry.key.idPedidos})}">Ver</a>
+                            <a th:href="@{/GestionZapaterias/Pedidos/VerPedido/{id}(id=${entry.key.idPedidos})}"
+                                class="link-primary link-underline-opacity-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                    <path
+                                        d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                </svg>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
@@ -111,20 +129,19 @@
             <ul class="pagination">
                 <li class="page-item" th:classappend="${paginaa.first} ? 'disabled'">
                     <a class="page-link"
-                    th:href="@{|/GestionZapaterias/Pedidos/${paginaa.number - 1}?orden=${orden}&direccion=${direccion}|}">Anterior</a>
+                        th:href="@{|/GestionZapaterias/Pedidos/${paginaa.number - 1}?orden=${orden}&direccion=${direccion}|}">Anterior</a>
                 </li>
 
-                <li class="page-item"
-                    th:each="i : ${#numbers.sequence(0, paginaa.totalPages - 1)}"
+                <li class="page-item" th:each="i : ${#numbers.sequence(0, paginaa.totalPages - 1)}"
                     th:classappend="${paginaa.number == i} ? 'active'">
                     <a class="page-link"
-                    th:href="@{|/GestionZapaterias/Pedidos/${i}?orden=${orden}&direccion=${direccion}|}"
-                    th:text="${i + 1}"></a>
+                        th:href="@{|/GestionZapaterias/Pedidos/${i}?orden=${orden}&direccion=${direccion}|}"
+                        th:text="${i + 1}"></a>
                 </li>
 
                 <li class="page-item" th:classappend="${paginaa.last} ? 'disabled'">
                     <a class="page-link"
-                    th:href="@{|/GestionZapaterias/Pedidos/${paginaa.number + 1}?orden=${orden}&direccion=${direccion}|}">Siguiente</a>
+                        th:href="@{|/GestionZapaterias/Pedidos/${paginaa.number + 1}?orden=${orden}&direccion=${direccion}|}">Siguiente</a>
                 </li>
             </ul>
         </nav>

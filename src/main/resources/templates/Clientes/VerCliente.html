@@ -1,53 +1,54 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Nuevo Proveedor</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
 </head>
+
 <body>
-    <header th:replace = "~{barra}"></header>
+    <header th:replace="~{barra}"></header>
     <div class="container mt-5" th:object="${Clientess}">
-        <h2 class="mb-4">Cliente</h2>
-            <input type="hidden" th:field = "${Clientess.ID_Cliente_proveedor}">
-            <!-- Nombre -->
-            <div class="mb-3">
-                <label for="Nombre" class="form-label">Nombre</label>
-                <p th:text="*{Nombre}"></p>
-            </div>
+        <h2 class="mb-4 fw-bold">Cliente</h2>
+        <input type="hidden" th:field="*{ID_Cliente_proveedor}" />
 
-            <!-- Teléfono -->
-            <div class="mb-3">
-                <label for="Telefono" class="form-label">Teléfono</label>
-                <p th:text="*{Telefono}"></p>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <strong>Nombre:</strong> <span th:text="*{Nombre}"></span>
             </div>
+            <div class="col-md-6">
+                <strong>Teléfono:</strong> <span th:text="*{Telefono}"></span>
+            </div>
+        </div>
 
-            <!-- Celular -->
-            <div class="mb-3">
-                <label for="Celular" class="form-label">Celular</label>
-                <p pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" th:text="*{Celular}"></p>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <strong>Celular:</strong> <span th:text="*{Celular}"></span>
             </div>
+            <div class="col-md-6">
+                <strong>Correo:</strong> <span th:text="*{Correo}"></span>
+            </div>
+        </div>
 
-            <!-- Correo -->
-            <div class="mb-3">
-                <label for="Correo" class="form-label">Correo</label>
-                <p th:text="*{Correo}"></p>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <strong>Dirección:</strong> <span th:text="*{Direccion}"></span>
             </div>
+            <div class="col-md-6">
+                <strong>Departamento:</strong> <span th:text="${Clientess.municipio.departamento.Nombre}"></span>
+            </div>
+        </div>
 
-            <!-- Dirección -->
-            <div class="mb-3">
-                <label for="Direccion" class="form-label">Dirección</label>
-                <p th:text="*{Direccion}"></p>
+        <div class="row mb-2">
+            <div class="col-md-6">
+                <strong>Municipio:</strong> <span th:text="${Clientess.municipio.Nombre}"></span>
             </div>
-            <!-- Municipio -->
-            <div class="combo">
-                <label for="Direccion" class="form-label">Departamento</label>
-                <p th:text="${Clientess.municipio.departamento.Nombre}"></p>
-                <label for="Direccion" class="form-label">Municipio</label>
-                <p th:text="${Clientess.municipio.Nombre}"></p>
-            </div>
+        </div>
     </div>
+
     <footer th:replace="~{piePagina}"></footer>
 </body>
+
 </html>
