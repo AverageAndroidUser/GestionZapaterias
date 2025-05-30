@@ -22,6 +22,11 @@ if (NumeroCelular) {
   });
 }
 
+/* Página de error */
+function regresar(){
+  history.back();
+}
+
 $(document).ready(function() {
   $('#departamentoLista').change(function() {
     var departamentoId = $(this).val();

@@ -17,7 +17,6 @@ body {
   flex-direction: column;
   font-family: 'Lato', sans-serif;
   height: 100vh;
-  margin: -20px 0 50px;
 }
 
 h1 {
@@ -46,8 +45,8 @@ a {
 
 button {
   border-radius: 20px;
-  border: 1px solid #e07604;
-  background-color: #e07604;
+  border: 1px solid #128fe2;
+  background-color: #128fe2;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
@@ -57,6 +56,12 @@ button {
   transition: transform 80ms ease-in;
   margin: 1rem 0;
   cursor: pointer;
+}
+
+button:hover{
+  border-color: #075a92;
+  background-color: #075a92;
+  transition: ease-in 0.2s;
 }
 
 button:active {
@@ -70,7 +75,6 @@ button:focus {
 button.ghost {
   background-color: transparent;
   border-color: #ffffff;
-  width: 50%;
 }
 .social-login {
   margin: 0.2rem 0;
@@ -215,9 +219,9 @@ input {
 }
 
 .side-element {
-  background: #ef7c00;
-  background: -webkit-linear-gradient(to right, #ef7c00, #efc300);
-  background: linear-gradient(to right, #ef7c00, #efc300);
+  background: #075a92;
+  background: -webkit-linear-gradient(to right, #084167, #1b9cf2);
+  background: linear-gradient(to right, #084167, #1b9cf2);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -264,6 +268,34 @@ input {
 
 .container.right-panel-active .side-element-right {
   transform: translateX(20%);
+}
+
+.error-message {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3em;
+}
+
+.registered-message {
+    background-color: #a8ffb8;
+    color: #24d745;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    text-align: center;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3em;
 }
 
 footer {
