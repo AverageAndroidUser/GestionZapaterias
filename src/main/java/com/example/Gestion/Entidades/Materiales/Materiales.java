@@ -19,9 +19,9 @@ public class Materiales {
     private int ID_Materiales;
     private String Nombre;
     private String Descripcion;
-    private int cantidad;
-    private int costoUnidad;
-    private int stockMinimo;
+    private Integer cantidad;
+    private Integer costoUnidad;
+    private Integer stockMinimo;
     private String fechaActualizacion;
 
     @ManyToOne
@@ -36,8 +36,8 @@ public class Materiales {
     @JoinColumn(name = "ID_Tipo_material")
     private Tipo_material tipoMaterial;
 
-    public Materiales(int iD_Materiales, String nombre, String descripcion, int cantidad, int costo_unidad,
-            int stock_minimo, Usuarios usuarios, Cliente_proveedor cliente_proveedor, Tipo_material tipo_material, String fecha_actualizacion) {
+    public Materiales(int iD_Materiales, String nombre, String descripcion, Integer cantidad, Integer costo_unidad,
+            Integer stock_minimo, Usuarios usuarios, Cliente_proveedor cliente_proveedor, Tipo_material tipo_material, String fecha_actualizacion) {
         ID_Materiales = iD_Materiales;
         Nombre = nombre;
         Descripcion = descripcion;
@@ -77,27 +77,27 @@ public class Materiales {
         Descripcion = descripcion;
     }
 
-    public int getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(int cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
-    public int getCostoUnidad() {
+    public Integer getCostoUnidad() {
         return costoUnidad;
     }
 
-    public void setCostoUnidad(int costo_unidad) {
+    public void setCostoUnidad(Integer costo_unidad) {
         costoUnidad = costo_unidad;
     }
 
-    public int getStockMinimo() {
+    public Integer getStockMinimo() {
         return stockMinimo;
     }
 
-    public void setStockMinimo(int stock_minimo) {
+    public void setStockMinimo(Integer stock_minimo) {
         stockMinimo = stock_minimo;
     }
 
