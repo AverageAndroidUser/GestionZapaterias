@@ -35,14 +35,14 @@ public class WebSecurityConfig {
         http.authenticationProvider(authenticationProvider());
 
         http.authorizeHttpRequests(auth ->
-                auth.requestMatchers("/GestionZapaterias/guardarUsuario", "/Municipios/", "/GestionZapaterias/Home").permitAll()
+                auth.requestMatchers("/GestionZapaterias/guardarUsuario", "/Municipios/", "/GestionZapaterias/Home", "/GestionZapaterias/correcto").permitAll()
                         .requestMatchers("/GestionZapaterias/**").authenticated()
                         .anyRequest().permitAll()
         )
         .formLogin(login ->
                 login.loginPage("/GestionZapaterias/register")
                         .loginProcessingUrl("/login") // URL para el formulario de inicio de sesión, se encuentra en registrarForm <form method="post" th:action="@{/login}">
-                        .failureUrl("/GestionZapaterias/error")
+                        .failureUrl("/GestionZapaterias/register?error")
                         .usernameParameter("Correo")
                         .passwordParameter("Contraseña")
                         .defaultSuccessUrl("/GestionZapaterias/Materiales/0")

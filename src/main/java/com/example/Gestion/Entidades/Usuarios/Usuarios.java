@@ -17,7 +17,7 @@ public class Usuarios {
     private int ID_Usuarios;
     private String Zapateria;
     private String Encargado;
-    private int Telefono;
+    private Integer Telefono;
     private String Celular;
     private String Correo;
     private String Direccion;
@@ -31,7 +31,7 @@ public class Usuarios {
         super();
     }
 
-    public Usuarios(int ID_Usuarios, String Zapateria, String Encargado, int Telefono, String Celular, 
+    public Usuarios(int ID_Usuarios, String Zapateria, String Encargado, Integer Telefono, String Celular, 
         String Correo, String Direccion, String Contraseña, Municipios Municipios){
             this.ID_Usuarios = ID_Usuarios;
             this.Zapateria = Zapateria;
@@ -65,10 +65,10 @@ public class Usuarios {
         this.Encargado = Encargado;
     }
 
-    public int getTelefono(){
+    public Integer getTelefono(){
         return Telefono;
     }
-    public void setTelefono(int Telefono){
+    public void setTelefono(Integer Telefono){
         this.Telefono = Telefono;
     }
 

@@ -4,12 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Sitio Web - Inicio</title>
+    <title>Lista de materiales</title>
     <link rel="stylesheet" href="/css/custom-bootstrap.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Iconos de Bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
+    <!-- icono app -->
+    <link rel="icon" type="image/x-icon" href="/images/logo.png">
+
     <style>
         .hero-section {
             background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://via.placeholder.com/1920x600');
@@ -27,7 +31,7 @@
     </style>
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
     <header th:replace="~{barra}"></header>
     <div class="container mt-4">
         <h2 class="mb-4">Lista de Materiales</h2>
@@ -50,22 +54,29 @@
                         <th>Descripción</th>
                         <th><a
                                 th:href="@{|/GestionZapaterias/Materiales/0?orden=cantidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Cantidad
-                                <i th:if="${orden == 'cantidad'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                <i th:if="${orden == 'cantidad'}"
+                                    th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                             </a>
                         </th>
                         <th><a
-                                th:href="@{|/GestionZapaterias/Materiales/0?orden=costoUnidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}"> Costo Unidad
-                                <i th:if="${orden == 'costoUnidad'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=costoUnidad&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">
+                                Costo Unidad
+                                <i th:if="${orden == 'costoUnidad'}"
+                                    th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                             </a>
                         </th>
                         <th><a
-                                th:href="@{|/GestionZapaterias/Materiales/0?orden=stockMinimo&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Stock Mínimo
-                                <i th:if="${orden == 'stockMinimo'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=stockMinimo&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Stock
+                                Mínimo
+                                <i th:if="${orden == 'stockMinimo'}"
+                                    th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                             </a>
                         </th>
                         <th><a
-                                th:href="@{|/GestionZapaterias/Materiales/0?orden=fechaActualizacion&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Fecha Actualización
-                                <i th:if="${orden == 'fechaActualizacion'}" th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
+                                th:href="@{|/GestionZapaterias/Materiales/0?orden=fechaActualizacion&direccion=${direccion == 'asc' ? 'desc' : 'asc'}|}">Fecha
+                                Actualización
+                                <i th:if="${orden == 'fechaActualizacion'}"
+                                    th:class="${direccion == 'asc' ? 'bi bi-arrow-up' : 'bi bi-arrow-down'}"></i>
                             </a>
                         </th>
                         <th>Proveedor</th>
@@ -86,7 +97,8 @@
                         <td th:text="${material.tipoMaterial.Descripcion}"></td>
                         <td th:text="${material.tipoMaterial.Unidad_medida}"></td>
                         <td>
-                            <a th:href="@{/GestionZapaterias/Materiales/EditarMaterial/} + ${material.ID_Materiales}" class="link-warning link-underline-opacity-0">
+                            <a th:href="@{/GestionZapaterias/Materiales/EditarMaterial/} + ${material.ID_Materiales}"
+                                class="link-warning link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round"
@@ -97,7 +109,8 @@
                                     <path d="M16 5l3 3" />
                                 </svg>
                             </a>
-                            <a th:href="@{/GestionZapaterias/Materiales/EliminarMaterial/} + ${material.ID_Materiales}" class="link-danger link-underline-opacity-0">
+                            <a th:href="@{/GestionZapaterias/Materiales/EliminarMaterial/} + ${material.ID_Materiales}"
+                                class="link-danger link-underline-opacity-0">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                     fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                     stroke-linejoin="round"
@@ -110,7 +123,17 @@
                                     <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
                                 </svg>
                             </a>
-                            <a th:href="@{/GestionZapaterias/Materiales/VerMaterial/} + ${material.ID_Materiales}">Ver</a>
+                            <a th:href="@{/GestionZapaterias/Materiales/VerMaterial/} + ${material.ID_Materiales}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    class="icon icon-tabler icons-tabler-outline icon-tabler-eye">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                                    <path
+                                        d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" />
+                                </svg>
+                            </a>
                         </td>
                     </tr>
                 </tbody>
