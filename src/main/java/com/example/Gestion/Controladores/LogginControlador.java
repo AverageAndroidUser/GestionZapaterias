@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.Gestion.Entidades.Departamentos.DepartamentoRepositorio;
 import com.example.Gestion.Entidades.Usuarios.Usuarios;
 import com.example.Gestion.Entidades.Usuarios.UsuarioRepositorio;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 @RequestMapping("/GestionZapaterias")
@@ -25,8 +27,9 @@ public class LogginControlador {
         modelo.addAttribute("Usuarioss", new Usuarios());
         return "registrarForm";
     }
+    
 
-    @PostMapping("guardarUsuario")
+    @PostMapping("/guardarUsuario")
     public String guardar(Usuarios usuario){
         BCryptPasswordEncoder password = new BCryptPasswordEncoder();
         String contraseña = password.encode(usuario.getContraseña());
