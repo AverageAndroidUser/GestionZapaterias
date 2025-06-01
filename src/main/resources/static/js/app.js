@@ -66,7 +66,7 @@ function buscarMateriales() {
   fetch(`/GestionZapaterias/Materiales/Buscar?nombre=` + keyword)
       .then(response => response.json())
       .then(data => {
-          console.log(data);  // Verifica la estructura del JSON devuelto
+          //console.log(data);  // Verifica la estructura del JSON devuelto
           var table = document.getElementById("tablaMateriales");
           table.innerHTML = ''; //valores en el html como "clienteProveedores.nombre" nombre se pone en minuscula por que no lo lee como "Nombre" lo mismo con "Descripcion"
           data.forEach(material => {
@@ -91,7 +91,7 @@ function buscarMateriales() {
 }
 
 function agregarProTipM(idTipo, button) {
-  console.log("------> ");
+  //console.log("------> ");
   var xhr = new XMLHttpRequest();
   xhr.open("GET", '/GestionZapaterias/Proveedores/Nuevo/TipoMaterialProveedor/' + encodeURIComponent(idTipo), true);
   xhr.onreadystatechange = function () {
@@ -127,7 +127,7 @@ function buscarProductos() {
   fetch(`/GestionZapaterias/Productos/Buscar?nombre=` + keyword)
       .then(response => response.json())
       .then(data => {
-          console.log(data);  
+          //console.log(data);  
           var table = document.getElementById("tablaProductos");
           table.innerHTML = ''; 
           data.forEach(producto => {
