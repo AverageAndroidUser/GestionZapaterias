@@ -15,7 +15,7 @@ public class Cliente_proveedor {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ID_Cliente_proveedor;
+    private Integer ID_Cliente_proveedor;
     private String Nombre;
     private Integer Telefono;
     private String Celular;
@@ -31,7 +31,7 @@ public class Cliente_proveedor {
     @JoinColumn(name = "ID_Municipios")
     private Municipios municipio;
 
-    public Cliente_proveedor(int iD_Cliente_proveedor, String nombre, Integer telefono, String celular, String direccion,
+    public Cliente_proveedor(Integer iD_Cliente_proveedor, String nombre, Integer telefono, String celular, String direccion,
             String correo, Boolean tipo_cliente_proveedor, Usuarios usuarios, Municipios municipios) {
         ID_Cliente_proveedor = iD_Cliente_proveedor;
         Nombre = nombre;
@@ -46,10 +46,10 @@ public class Cliente_proveedor {
     public Cliente_proveedor() {
     }
     
-    public int getID_Cliente_proveedor() {
+    public Integer getID_Cliente_proveedor() {
         return ID_Cliente_proveedor;
     }
-    public void setID_Cliente_proveedor(int iD_Cliente_proveedor) {
+    public void setID_Cliente_proveedor(Integer iD_Cliente_proveedor) {
         ID_Cliente_proveedor = iD_Cliente_proveedor;
     }
     public String getNombre() {

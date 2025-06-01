@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.example.Gestion.Entidades.Departamentos.DepartamentoRepositorio;
 import com.example.Gestion.Entidades.Usuarios.Usuarios;
 import com.example.Gestion.Entidades.Usuarios.UsuarioRepositorio;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller

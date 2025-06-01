@@ -65,7 +65,40 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr th:each="tipos : ${Tiposs}">
+                        <!-- Si la lista NO está vacía -->
+                        <div th:if="${not #lists.isEmpty(TiposSeleccionados)}">
+                            <p>Bienvenido, administrador.</p>
+                            <tr th:each="tipo : ${Tiposs}">
+                                <td th:value="${tipo.ID_Tipo_material}" hidden></td>
+                                <td style="font-weight: 600;" th:text="${tipo.Descripcion}"></td>
+                                <td>
+                                    <!-- Verificar si el tipo actual está en TiposSeleccionados -->
+                                    <th:block
+                                        th:with="tipoEncontrado=${#lists.contains(TiposSeleccionados.![Tipo_material.ID_Tipo_material], tipo.ID_Tipo_material)}">
+                                        <!-- Caso cuando el tipo está en TiposSeleccionados -->
+                                        <th:block th:if="${tipoEncontrado}">
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                th:onclick="'agregarProTipM(' + ${tipo.ID_Tipo_material} + ', this)'"
+                                                th:id="'botonAgregar_' + ${tipo.ID_Tipo_material}" disabled>Agregar</button>
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                th:onclick="'eliminarProTipM(' + ${tipo.ID_Tipo_material} + ', this)'"
+                                                th:id="'botonEliminar_' + ${tipo.ID_Tipo_material}">Eliminar</button>
+                                        </th:block>
+                                        <!-- Caso cuando el tipo NO está en TiposSeleccionados -->
+                                        <th:block th:unless="${tipoEncontrado}">
+                                            <button type="button" class="btn btn-primary btn-sm"
+                                                th:onclick="'agregarProTipM(' + ${tipo.ID_Tipo_material} + ', this)'"
+                                                th:id="'botonAgregar_' + ${tipo.ID_Tipo_material}">Agregar</button>
+                                            <button type="button" class="btn btn-danger btn-sm" disabled
+                                                th:id="'botonEliminar_' + ${tipo.ID_Tipo_material}">Eliminar</button>
+                                        </th:block>
+                                    </th:block>
+                                </td>
+                            </tr>
+                        </div>
+                        <!-- lista vacía -->
+                        <div th:if="${#lists.isEmpty(TiposSeleccionados)}">
+                           <tr th:each="tipos : ${Tiposs}">
                             <td th:value="${tipos.ID_Tipo_material}" hidden></td>
                             <td style="font-weight: 600;" th:text="${tipos.Descripcion}"></td>
                             <td>
@@ -76,6 +109,7 @@
                                     th:onclick="'eliminarProTipM(' + ${tipos.ID_Tipo_material} + ', this)'"
                                     th:id="'botonEliminar_' + ${tipos.ID_Tipo_material}" disabled>Eliminar</button>
                             </td>
+                        </div>
                         </tr>
                     </tbody>
                 </table>

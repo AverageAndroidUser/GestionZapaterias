@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,7 @@ public class ProvedorControlador {
         session.removeAttribute("listaTipoMaterial"); // limpia lista anterior
         Cliente_proveedor cliente_proveedor = new Cliente_proveedor();
 
+        model.addAttribute("TiposSeleccionados", new ArrayList<Proveedor_tipo_material>());
         model.addAttribute("Tiposs", tipo_materialRepositorio.findAll());
         model.addAttribute("Proveedoress", cliente_proveedor);
         model.addAttribute("Departamentoss", departamentoRepositorio.findAll());
@@ -97,7 +99,7 @@ public class ProvedorControlador {
     }
 
     // Guardar proveedor junto a su lista de tipos de material
-    @PostMapping("/GuardarProveedor")
+    /*@PostMapping("/GuardarProveedor")
     public String guardarProveedor(Cliente_proveedor cliente_proveedor, HttpSession session) {
         cliente_proveedor.setUsuarios(usuarioLog.correoUsuario());
         cliente_proveedor.setTipo_cliente_proveedor(true);
@@ -113,9 +115,42 @@ public class ProvedorControlador {
         }
 
         return "redirect:/GestionZapaterias/Proveedores/";
+    }*/
+    @PostMapping("/GuardarProveedor")
+    public String guardarProveedor(Cliente_proveedor cliente_proveedor, HttpSession session) {
+        cliente_proveedor.setUsuarios(usuarioLog.correoUsuario());
+        cliente_proveedor.setTipo_cliente_proveedor(true);
+        Cliente_proveedor proveedorGuardado = cliente_proveedorRepositorio.save(cliente_proveedor);
+
+        List<Proveedor_tipo_material> lista = (List<Proveedor_tipo_material>) session.getAttribute("listaTipoMaterial");
+        
+        if (lista != null) {
+            // Obtener los IDs de los tipos de material en sesión (nuevos o actualizados)
+            Set<Integer> idsTiposEnSesion = lista.stream()
+                .map(ptm -> ptm.getTipo_material().getID_Tipo_material())
+                .collect(Collectors.toSet());
+
+            // Si es una edición, eliminar los registros viejos que ya no están en la lista de sesión
+            if (cliente_proveedor.getID_Cliente_proveedor() != null) {
+                List<Proveedor_tipo_material> tiposExistentes = proveedor_tipo_materialRepositorio.findByProveedor(proveedorGuardado);
+                
+                for (Proveedor_tipo_material existente : tiposExistentes) {
+                    if (!idsTiposEnSesion.contains(existente.getTipo_material().getID_Tipo_material())) {
+                        proveedor_tipo_materialRepositorio.delete(existente);
+                    }
+                }
+            }
+            // Guardar los nuevos registros
+            for (Proveedor_tipo_material ptm : lista) {
+                ptm.setCliente_proveedor(proveedorGuardado);
+                proveedor_tipo_materialRepositorio.save(ptm);
+            }
+            session.removeAttribute("listaTipoMaterial");
+        }
+        return "redirect:/GestionZapaterias/Proveedores/";
     }
 
-    // Editar proveedor existente (con carga de datos básica)
+    // Editar proveedor existente
     @GetMapping("/EditarProveedor/{id}")
     public String editarProveedor(@PathVariable("id") int id, Model model, HttpSession session) {
         Optional<Cliente_proveedor> optional = cliente_proveedorRepositorio.findById(id);
@@ -125,6 +160,8 @@ public class ProvedorControlador {
             // Precargar los tipos de material del proveedor en la sesión
             List<Proveedor_tipo_material> tiposActuales = proveedor_tipo_materialRepositorio.findByProveedor(cliente_proveedor);
             session.setAttribute("listaTipoMaterial", tiposActuales);
+            
+            model.addAttribute("TiposSeleccionados", session.getAttribute("listaTipoMaterial"));
 
             model.addAttribute("Tiposs", tipo_materialRepositorio.findAll());
             model.addAttribute("Departamentoss", departamentoRepositorio.findAll());
